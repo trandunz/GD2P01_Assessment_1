@@ -4,31 +4,26 @@ using UnityEngine;
 
 public class Script_Player : MonoBehaviour
 {
-    Vector2 m_InputVector = Vector2.zero;
-    bool m_Crouched = false;
-    bool m_Rolling = false;
-
-    float m_TurnSmoothVelocity = 0;
-    float m_RollTimer = 0;
-
-    [SerializeField] float m_MoveSpeed = 5.0f;
-    [SerializeField] float m_DodgeSpeed = 5.0f;
-    [SerializeField] float m_DodgeLength_s = 0.5f;
-    [SerializeField] float m_TurnSpeed = 5.0f;
-
+    #region Member Variables
+    [SerializeField] float m_MoveSpeed = 5.0f, m_DodgeSpeed = 5.0f, m_DodgeLength_s = 0.5f, m_TurnSpeed = 5.0f;
     [SerializeField] Script_Gun m_ActiveWeapon;
+
     GameObject m_Mesh;
     CharacterController m_Controller;
-    RaycastHit m_Hit;
+    RaycastHit m_MouseHit, m_HeadCheckHit;
     Vector3 m_MousePos3D;
+    Vector2 m_InputVector = Vector2.zero;
+    bool m_Crouched = false, m_Rolling = false;
+    float m_TurnSmoothVelocity = 0, m_RollTimer = 0;
+    #endregion
 
-    private void Start()
+    #region Private
+    void Start()
     {
         m_Controller = GetComponent<CharacterController>();
         m_Mesh = GetComponentInChildren<MeshFilter>().gameObject;
     }
-
-    private void Update()
+    void Update()
     {
         HandleLookAtMouse();
         ApplyGravity();
@@ -51,7 +46,6 @@ public class Script_Player : MonoBehaviour
             }
         }
     }
-
     void SetGameObjectCrouched()
     {
         if (m_Mesh.transform.localScale == Vector3.one)
@@ -60,28 +54,34 @@ public class Script_Player : MonoBehaviour
             m_Controller.height = 0.5f;
         }
     }
-
     void SetGameObjectStanding()
     {
-        if (m_Mesh.transform.localScale != Vector3.one && !m_Crouched)
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out m_HeadCheckHit, 10.0f))
+        {
+            if (m_HeadCheckHit.transform.gameObject != null)
+            {
+                m_Crouched = true;
+                return;
+            }
+        }
+
+
+        if(m_Mesh.transform.localScale != Vector3.one && !m_Crouched)
         {
             m_Mesh.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             m_Controller.height = 2.0f;
         }
     }
-
     void HandleMovement(float _moveSpeed)
     {
         if (m_InputVector.magnitude > 0.1f)
             m_Controller.Move(new Vector3(m_InputVector.x, 0.0f, m_InputVector.y) * _moveSpeed * Time.deltaTime);
     }
-
     void HandleLookAtMouse()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out m_Hit))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out m_MouseHit))
         {
-            m_MousePos3D = m_Hit.point;
+            m_MousePos3D = m_MouseHit.point;
         }
 
         float targetAngle;
@@ -91,7 +91,6 @@ public class Script_Player : MonoBehaviour
         movedir.Normalize();
         transform.rotation = Quaternion.Euler(0.0f, smoothedAngle, 0.0f);
     }
-
     void HandleRoll()
     {
         if (m_RollTimer > 0)
@@ -102,24 +101,10 @@ public class Script_Player : MonoBehaviour
             m_Controller.Move(transform.rotation * Vector3.forward * m_DodgeSpeed * Time.deltaTime);
         }
     }
-
-
-    IEnumerator RollRoutine()
-    {
-        m_Rolling = true;
-        m_RollTimer = m_DodgeLength_s;
-        SetGameObjectCrouched();
-        yield return new WaitUntil(() => m_RollTimer <= 0);
-        SetGameObjectStanding();
-        m_Rolling = false;
-    }
-
-
     void ApplyGravity()
     {
         m_Controller.Move(Vector3.down* 9.81f * Time.deltaTime);
     }
-
     Vector2 ReturnInput()
     {
         m_InputVector = Vector2.zero;
@@ -157,6 +142,16 @@ public class Script_Player : MonoBehaviour
 
         return m_InputVector.normalized;
     }
+    IEnumerator RollRoutine()
+    {
+        m_Rolling = true;
+        m_RollTimer = m_DodgeLength_s;
+        SetGameObjectCrouched();
+        yield return new WaitUntil(() => m_RollTimer <= 0);
+        SetGameObjectStanding();
+        m_Rolling = false;
+    }
+    #endregion
 }
 
 

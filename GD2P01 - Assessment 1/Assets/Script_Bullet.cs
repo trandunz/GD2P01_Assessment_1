@@ -4,25 +4,38 @@ using UnityEngine;
 
 public class Script_Bullet : MonoBehaviour
 {
+    #region Member Variables
     [SerializeField] float m_TravelSpeed = 5.0f;
-    Vector3 m_Direction;
-    // Update is called once per frame
-    void Update()
-    {
-        transform.position += m_Direction * m_TravelSpeed * Time.deltaTime;
-    }
 
+    Vector3 m_Direction;
+    #endregion
+
+    #region Public
     public void SetDirection(Vector3 _direction)
     {
         m_Direction = _direction;
         transform.rotation = Quaternion.LookRotation(Vector3.up, _direction);
     }
+    #endregion
 
-    private void OnTriggerStay(Collider other)
+    #region Private
+    void Update()
     {
-        if (other.gameObject.tag != "Player" && other.gameObject.tag != "Bullet")
+        transform.position += m_Direction * m_TravelSpeed * Time.deltaTime;
+    }
+    void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.tag != "Player" && _other.gameObject.tag != "Bullet")
         {
             Destroy(this.gameObject);
         }
     }
+    void OnTriggerStay(Collider _other)
+    {
+        if (_other.gameObject.tag != "Player" && _other.gameObject.tag != "Bullet")
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    #endregion
 }
