@@ -5,7 +5,9 @@ using UnityEngine;
 public class Script_Bullet : MonoBehaviour
 {
     #region Member Variables
+    [SerializeField] float m_Damage = 10.0f;
     [SerializeField] float m_TravelSpeed = 5.0f;
+    [SerializeField] bool m_Friendly = true;
 
     Vector3 m_Direction;
     #endregion
@@ -16,6 +18,14 @@ public class Script_Bullet : MonoBehaviour
         m_Direction = _direction;
         transform.rotation = Quaternion.LookRotation(Vector3.up, _direction);
     }
+    public float GetDamage()
+    {
+        return m_Damage;
+    }
+    public bool IsFriendly()
+    {
+        return m_Friendly;
+    }
     #endregion
 
     #region Private
@@ -25,16 +35,36 @@ public class Script_Bullet : MonoBehaviour
     }
     void OnTriggerEnter(Collider _other)
     {
-        if (_other.gameObject.tag != "Player" && _other.gameObject.tag != "Bullet")
+        if (m_Friendly)
         {
-            Destroy(this.gameObject);
+            if (_other.gameObject.tag != "Player" && _other.gameObject.tag != "Bullet")
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        else
+        {
+            if (_other.gameObject.tag == "Player" && _other.gameObject.tag != "Bullet")
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
     void OnTriggerStay(Collider _other)
     {
-        if (_other.gameObject.tag != "Player" && _other.gameObject.tag != "Bullet")
+        if (m_Friendly)
         {
-            Destroy(this.gameObject);
+            if (_other.gameObject.tag != "Player" && _other.gameObject.tag != "Bullet")
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        else
+        {
+            if (_other.gameObject.tag == "Player" && _other.gameObject.tag != "Bullet")
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
     #endregion

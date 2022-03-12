@@ -133,8 +133,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dec9e23c5a95f6f419e130bfcc62f3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Alarm: {fileID: 0}
   m_VisionDistance: 10
   m_WayPoints: []
+  m_BulletPrefab: {fileID: 8206654807015081993, guid: 4fb7f5a8ce9750441816f517b0c5fb6b, type: 3}
+  m_Player: {fileID: 0}
 --- !u!1 &6010216037889605420
 GameObject:
   m_ObjectHideFlags: 0

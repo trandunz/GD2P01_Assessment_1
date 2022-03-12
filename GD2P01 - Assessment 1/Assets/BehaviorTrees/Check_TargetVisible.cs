@@ -10,11 +10,13 @@ public class Check_TargetVisible : BehaviorNode
     Transform m_Transform, m_Target;
     NavMeshAgent m_Agent;
     RaycastHit m_VisionHit;
+    Script_Enemy m_Enemy;
     #endregion
 
     #region Public
-    public Check_TargetVisible(NavMeshAgent _agent, Transform _target, float _visionDistance)
+    public Check_TargetVisible(Script_Enemy _enemyScript, NavMeshAgent _agent, Transform _target, float _visionDistance)
     {
+        m_Enemy = _enemyScript;
         m_Agent = _agent;
         m_Target = _target;
         m_VisionDistance = _visionDistance;
@@ -22,9 +24,8 @@ public class Check_TargetVisible : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
-        if (IsPlayerInViewCone())
+        if (IsPlayerInViewCone() || m_Enemy.m_OnRoute)
         {
-            Debug.Log("Player In View Cone!");
             m_Agent.isStopped = true;
             p_State = BehaviorNodeState.SUCCESS;
         }
@@ -41,28 +42,38 @@ public class Check_TargetVisible : BehaviorNode
     #region Private
     bool IsPlayerInViewCone()
     {
-        bool m_TargetFound = false;
-        RaycastHit hit;
-        for (int i = 0; i < m_Fov; i++)
+        Vector3 dirToPlayer = (m_Target.position - (m_Transform.position + Vector3.up * 0.5f));
+        if (Vector3.Angle(m_Transform.forward, dirToPlayer) <= m_Fov && dirToPlayer.magnitude <= m_VisionDistance)
         {
-            Vector3 shootVec = m_Transform.rotation * Quaternion.AngleAxis(-1 * m_Fov / 2 + (i * m_Fov / m_Fov), Vector3.up) * Vector3.forward;
-            Vector3 outPos = m_Transform.position + shootVec * m_VisionDistance;
-            if (Physics.Raycast(m_Transform.position, shootVec, out hit, m_VisionDistance))
+            if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
             {
-                Debug.DrawLine(m_Transform.position, hit.point, Color.green);
-                if (hit.transform.tag == m_Target.tag)
+                if (m_VisionHit.transform.tag is "Player")
                 {
-                    Debug.DrawLine(m_Transform.position, hit.point, Color.red);
-                    m_TargetFound = true;
+                    Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
+                    m_Enemy.m_DirectionToPlayer = dirToPlayer;
+                    return true;
                 }
             }
-            else
+            dirToPlayer = (m_Target.position - (m_Transform.position));
+            if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
             {
-                Debug.DrawLine(m_Transform.position, outPos, Color.green);
+                if (m_VisionHit.transform.tag is "Player")
+                {
+                    Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
+                    m_Enemy.m_DirectionToPlayer = dirToPlayer;
+                    return true;
+                }
             }
         }
-        
-        return m_TargetFound;
+
+        for (int i = 0; i < m_Fov * 2; i++)
+        {
+            Vector3 shootVec = m_Transform.rotation * Quaternion.AngleAxis(-1 * m_Fov + (i * m_Fov / m_Fov), Vector3.up) * Vector3.forward;
+            Vector3 outPos = m_Transform.position + Vector3.up * 0.5f + shootVec * m_VisionDistance;
+            Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, outPos, Color.green);
+        }
+
+        return false;
     }
     #endregion
 }

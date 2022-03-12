@@ -5,15 +5,16 @@ using UnityEngine;
 public class Script_Player : MonoBehaviour
 {
     #region Member Variables
-    [SerializeField] float m_MoveSpeed = 5.0f, m_DodgeSpeed = 5.0f, m_DodgeLength_s = 0.5f, m_TurnSpeed = 5.0f;
+    [SerializeField] float m_MoveSpeed = 5.0f, m_DodgeSpeed = 5.0f, m_DodgeLength_s = 0.5f, m_TurnSpeed = 5.0f, m_InteractDistance = 5.0f,
+        m_HeadCheckDistance = 1.0f;
     [SerializeField] Script_Gun m_ActiveWeapon;
 
     GameObject m_Mesh;
     CharacterController m_Controller;
-    RaycastHit m_MouseHit, m_HeadCheckHit;
+    RaycastHit m_MouseHit, m_HeadCheckHit, m_InteractHit;
     Vector3 m_MousePos3D;
     Vector2 m_InputVector = Vector2.zero;
-    bool m_Crouched = false, m_Rolling = false;
+    bool m_Crouched = false, m_Rolling = false, m_Interacting = false;
     float m_TurnSmoothVelocity = 0, m_RollTimer = 0;
     #endregion
 
@@ -25,24 +26,36 @@ public class Script_Player : MonoBehaviour
     }
     void Update()
     {
-        HandleLookAtMouse();
         ApplyGravity();
-        ReturnInput();
-        HandleRoll();
 
-        if (!m_Rolling)
+        if (!m_Interacting)
         {
-            if (m_Crouched)
-            {
-                SetGameObjectCrouched();
+            HandleLookAtMouse();
 
-                HandleMovement(m_MoveSpeed / 2);
+            ReturnInput();
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out m_HeadCheckHit, m_HeadCheckDistance))
+            {
+                if (m_HeadCheckHit.transform.gameObject != null)
+                {
+                    m_Crouched = true;
+                }
             }
-            else
-            {
-                SetGameObjectStanding();
+            HandleRoll();
 
-                HandleMovement(m_MoveSpeed);
+            if (!m_Rolling)
+            {
+                if (m_Crouched)
+                {
+                    SetGameObjectCrouched();
+
+                    HandleMovement(m_MoveSpeed / 2);
+                }
+                else
+                {
+                    SetGameObjectStanding();
+
+                    HandleMovement(m_MoveSpeed);
+                }
             }
         }
     }
@@ -56,17 +69,7 @@ public class Script_Player : MonoBehaviour
     }
     void SetGameObjectStanding()
     {
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out m_HeadCheckHit, 10.0f))
-        {
-            if (m_HeadCheckHit.transform.gameObject != null)
-            {
-                m_Crouched = true;
-                return;
-            }
-        }
-
-
-        if(m_Mesh.transform.localScale != Vector3.one && !m_Crouched)
+        if(m_Mesh.transform.localScale != Vector3.one)
         {
             m_Mesh.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             m_Controller.height = 2.0f;
@@ -129,6 +132,7 @@ public class Script_Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             m_Crouched = true;
+            SetGameObjectCrouched();
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -139,8 +143,32 @@ public class Script_Player : MonoBehaviour
         {
             m_ActiveWeapon.Fire();
         }
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            if (!m_Interacting)
+                StartCoroutine(InteractRoutine());
+        }
 
         return m_InputVector.normalized;
+    }
+    IEnumerator InteractRoutine()
+    {
+        m_Interacting = true;
+        Script_Interactable hitObject = null;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out m_InteractHit, m_InteractDistance))
+        {
+            hitObject = m_InteractHit.transform.GetComponent<Script_Interactable>();
+            
+        }
+        if (hitObject != null)
+        {
+            hitObject.Interact();
+            yield return new WaitUntil(() => hitObject.HasInteractFinished());
+        }
+        else
+            yield return null;
+
+        m_Interacting = false;
     }
     IEnumerator RollRoutine()
     {

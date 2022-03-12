@@ -25,6 +25,10 @@ public class Task_Patrol : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
+        if (!IsEnemyOnRouteToWayPoint())
+        {
+            SetAgentDestinationToWayPoint();
+        }
         if (HasReachedWaypoint())
         {
             SetWayPointToNext();
@@ -62,6 +66,14 @@ public class Task_Patrol : BehaviorNode
             return false;
         }
             
+    }
+    bool IsEnemyOnRouteToWayPoint()
+    {
+        if (m_Agent.destination == new Vector3(m_CurrentWayPoint.position.x, m_Agent.transform.position.y, m_CurrentWayPoint.position.z))
+        {
+            return true;
+        }
+        return false;
     }
     #endregion
 }
