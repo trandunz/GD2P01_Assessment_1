@@ -21,18 +21,30 @@ public class Task_Flee : BehaviorNode
     public override BehaviorNodeState Evaluate()
     {
         // BROKEN
-        if ((m_Target.position - m_Agent.transform.position).magnitude <= 10.0f)
+        if (m_Target)
         {
-            m_Agent.transform.LookAt(new Vector3(m_Target.position.x, m_Agent.transform.position.y, m_Target.position.z));
-            m_Agent.isStopped = true;
-            m_Agent.GetComponent<Script_Enemy>().m_OnRoute = false;
-            p_State = BehaviorNodeState.FAILURE;
+            if ((m_Target.position - m_Agent.transform.position).magnitude <= 2.0f)
+            {
+                m_Agent.transform.LookAt(new Vector3(m_Target.position.x, m_Agent.transform.position.y, m_Target.position.z));
+                m_Agent.GetComponent<Script_Enemy>().m_OnRoute = true;
+                {
+                    if (m_Agent.isActiveAndEnabled)
+                    {
+                        m_Agent.velocity = Vector3.zero;
+                        m_Agent.isStopped = true;
+                    }
+                }
+                p_State = BehaviorNodeState.FAILURE;
+            }
         }
         else
         {
             m_Agent.GetComponent<Script_Enemy>().m_OnRoute = true;
             m_Agent.SetDestination(m_StartingWaypoint.position);
-            m_Agent.isStopped = false;
+            if (m_Agent)
+            {
+                m_Agent.isStopped = false;
+            }
             p_State = BehaviorNodeState.RUNNING;
         }
 

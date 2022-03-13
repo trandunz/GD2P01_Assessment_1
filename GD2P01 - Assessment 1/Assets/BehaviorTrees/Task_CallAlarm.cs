@@ -21,7 +21,10 @@ public class Task_CallAlarm : BehaviorNode
     public override BehaviorNodeState Evaluate()
     {
         m_Agent.SetDestination(m_Alarm.transform.position);
-        m_Agent.isStopped = false;
+        if (m_Agent)
+        {
+            m_Agent.isStopped = false;
+        }
         float distance = (new Vector3(m_Alarm.transform.position.x, m_Agent.transform.position.y, m_Alarm.transform.position.z) - m_Agent.transform.position).magnitude;
 
         if (distance <= 1.0f)

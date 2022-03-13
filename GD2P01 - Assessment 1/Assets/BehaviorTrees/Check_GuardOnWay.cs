@@ -6,7 +6,6 @@ public class Check_GuardOnWay : BehaviorNode
 {
     #region Member Variables
     Script_Alarm m_Alarm;
-    bool m_OnWayToAlarm;
     Script_Enemy m_Enemy;
     #endregion
 
@@ -20,11 +19,15 @@ public class Check_GuardOnWay : BehaviorNode
     {
         if (!m_Alarm.IsGuardOnWay())
         {
-            m_Alarm.SetGuardOnWay();
+            m_Alarm.SetGuardOnWay(m_Enemy);
             m_Enemy.m_OnRoute = true;
         }
 
-        if (m_Alarm.IsGuardOnWay() && !m_Enemy.m_OnRoute)
+        if (m_Enemy.m_OnRoute)
+        {
+            p_State = BehaviorNodeState.FAILURE;
+        }
+        else if (m_Alarm.IsGuardOnWay())
         {
             p_State = BehaviorNodeState.SUCCESS;
         }

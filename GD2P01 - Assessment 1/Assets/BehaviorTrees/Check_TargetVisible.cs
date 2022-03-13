@@ -24,14 +24,13 @@ public class Check_TargetVisible : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
-        if (IsPlayerInViewCone() || m_Enemy.m_OnRoute)
+        bool isPlayerInViewCone = IsPlayerInViewCone();
+        if ((isPlayerInViewCone && m_Enemy.IsInCombat()) || m_Enemy.m_OnRoute)
         {
-            m_Agent.isStopped = true;
             p_State = BehaviorNodeState.SUCCESS;
         }
         else
         {
-            m_Agent.isStopped = false;
             p_State = BehaviorNodeState.FAILURE;
         }
 
@@ -42,28 +41,38 @@ public class Check_TargetVisible : BehaviorNode
     #region Private
     bool IsPlayerInViewCone()
     {
-        Vector3 dirToPlayer = (m_Target.position - (m_Transform.position + Vector3.up * 0.5f));
-        if (Vector3.Angle(m_Transform.forward, dirToPlayer) <= m_Fov && dirToPlayer.magnitude <= m_VisionDistance)
+        if (m_Target)
         {
-            if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
+            Vector3 dirToPlayer = (m_Target.position - (m_Transform.position + Vector3.up * 0.5f));
+            if (Vector3.Angle(m_Transform.forward, dirToPlayer) <= m_Fov && dirToPlayer.magnitude <= m_VisionDistance)
             {
-                if (m_VisionHit.transform.tag is "Player")
+                if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
                 {
-                    Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
-                    m_Enemy.m_DirectionToPlayer = dirToPlayer;
-                    return true;
+                    if (m_VisionHit.transform.tag is "Player")
+                    {
+                        m_Enemy.GetManager().SetLastKnownLocation(m_VisionHit.point);
+                        m_Enemy.IncreaseAlert();
+                        Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
+                        m_Enemy.SetDirectionToPlayer(dirToPlayer);
+                        m_Transform.LookAt(m_VisionHit.point);
+                        return true;
+                    }
+                }
+                dirToPlayer = (m_Target.position - (m_Transform.position));
+                if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
+                {
+                    if (m_VisionHit.transform.tag is "Player")
+                    {
+                        m_Enemy.GetManager().SetLastKnownLocation(m_VisionHit.point);
+                        m_Enemy.IncreaseAlert();
+                        Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
+                        m_Enemy.SetDirectionToPlayer(dirToPlayer);
+                        m_Transform.LookAt(m_VisionHit.point);
+                        return true;
+                    }
                 }
             }
-            dirToPlayer = (m_Target.position - (m_Transform.position));
-            if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
-            {
-                if (m_VisionHit.transform.tag is "Player")
-                {
-                    Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
-                    m_Enemy.m_DirectionToPlayer = dirToPlayer;
-                    return true;
-                }
-            }
+
         }
 
         for (int i = 0; i < m_Fov * 2; i++)
@@ -72,6 +81,8 @@ public class Check_TargetVisible : BehaviorNode
             Vector3 outPos = m_Transform.position + Vector3.up * 0.5f + shootVec * m_VisionDistance;
             Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, outPos, Color.green);
         }
+
+        m_Enemy.DecreaseAlert();
 
         return false;
     }

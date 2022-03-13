@@ -8,8 +8,8 @@ public class Task_Patrol : BehaviorNode
     #region Member Variables
     NavMeshAgent m_Agent;
     Transform[] m_Waypoints;
-    Transform m_CurrentWayPoint;
-    const float m_MinStopDistance = 0.1f;
+    Vector3 m_CurrentWayPoint;
+    const float m_MinStopDistance = 0.25f;
     int m_CurrentWaypointIndex = 0;
     #endregion
 
@@ -20,7 +20,7 @@ public class Task_Patrol : BehaviorNode
         m_Agent = _agent;
         m_Waypoints = _waypoints;
         m_CurrentWaypointIndex = 0;
-        m_CurrentWayPoint = m_Waypoints[m_CurrentWaypointIndex];
+        m_CurrentWayPoint = m_Waypoints[m_CurrentWaypointIndex].position;
         SetAgentDestinationToWayPoint();
     }
     public override BehaviorNodeState Evaluate()
@@ -33,6 +33,7 @@ public class Task_Patrol : BehaviorNode
         {
             SetWayPointToNext();
         }
+        m_Agent.isStopped = false;
 
         p_State = BehaviorNodeState.RUNNING;
         return p_State;
@@ -42,22 +43,22 @@ public class Task_Patrol : BehaviorNode
     #region Private
     void SetAgentDestinationToWayPoint()
     {
-        m_Agent.SetDestination(new Vector3(m_CurrentWayPoint.position.x, m_Agent.transform.position.y, m_CurrentWayPoint.position.z));
+        m_Agent.SetDestination(m_CurrentWayPoint);
     }
     void SetWayPointToNext()
     {
-        m_CurrentWaypointIndex += 1;
+        m_CurrentWaypointIndex++;
         if (m_CurrentWaypointIndex >= m_Waypoints.Length)
         {
             m_CurrentWaypointIndex = 0;
         }
 
-        m_CurrentWayPoint = m_Waypoints[m_CurrentWaypointIndex];
+        m_CurrentWayPoint = m_Waypoints[m_CurrentWaypointIndex].position;
         SetAgentDestinationToWayPoint();
     }
     bool HasReachedWaypoint()
     {
-        if (m_CurrentWayPoint.position.x - m_Agent.transform.position.x <= m_MinStopDistance && m_CurrentWayPoint.position.z - m_Agent.transform.position.z <= m_MinStopDistance)
+        if (m_Agent.remainingDistance <= m_MinStopDistance)
         {
             return true;
         }
@@ -69,10 +70,14 @@ public class Task_Patrol : BehaviorNode
     }
     bool IsEnemyOnRouteToWayPoint()
     {
-        if (m_Agent.destination == new Vector3(m_CurrentWayPoint.position.x, m_Agent.transform.position.y, m_CurrentWayPoint.position.z))
+        foreach(Transform pos in m_Waypoints)
         {
-            return true;
+            if (m_Agent.destination == pos.position)
+            {
+                return true;
+            }
         }
+
         return false;
     }
     #endregion
