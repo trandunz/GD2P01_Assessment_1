@@ -50,7 +50,7 @@ public class Check_TargetVisible : BehaviorNode
                 {
                     if (m_VisionHit.transform.tag is "Player")
                     {
-                        m_Enemy.GetManager().SetLastKnownLocation(m_VisionHit.point);
+                        m_Enemy.GetManager().SetLastKnownLocation(m_Target.position);
                         m_Enemy.IncreaseAlert();
                         Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
                         m_Enemy.SetDirectionToPlayer(dirToPlayer);
@@ -63,7 +63,7 @@ public class Check_TargetVisible : BehaviorNode
                 {
                     if (m_VisionHit.transform.tag is "Player")
                     {
-                        m_Enemy.GetManager().SetLastKnownLocation(m_VisionHit.point);
+                        m_Enemy.GetManager().SetLastKnownLocation(m_Target.position);
                         m_Enemy.IncreaseAlert();
                         Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, m_VisionHit.point, Color.red);
                         m_Enemy.SetDirectionToPlayer(dirToPlayer);

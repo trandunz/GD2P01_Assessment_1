@@ -21,6 +21,13 @@ public class Script_Enemy : TaskBehaviorTree
     #endregion
 
     #region Public
+    public void SetAlertMax()
+    {
+        if (m_Player)
+            m_Manager.SetLastKnownLocation(m_Player.position);
+        m_AlertLevel = m_AlertDecay_s;
+        m_InCombat = true;
+    }
     public void SetWaypoints(Transform[] _waypoints)
     {
         m_WayPoints = _waypoints;
@@ -44,6 +51,10 @@ public class Script_Enemy : TaskBehaviorTree
             return true;
         }
         return false;
+    }
+    public bool IsTakingDamage()
+    {
+        return m_TakingDamage;
     }
     public void IncreaseAlert()
     {
@@ -99,32 +110,32 @@ public class Script_Enemy : TaskBehaviorTree
     {
         m_Manager = GameObject.FindWithTag("EnemyManager").GetComponent<Script_EnemyManager>();
         m_Alarm = GameObject.FindWithTag("Alarm").GetComponent<Script_Alarm>();
-        m_Player = GameObject.FindWithTag("Player").transform;
+        NavMeshAgent attachedAgent = GetComponent<NavMeshAgent>();
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player)
+            m_Player = player.transform;
         BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
         {
             new BehaviorSelector(new List<BehaviorNode>
             {
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetVisible(this, GetComponent<NavMeshAgent>(), m_Player, m_VisionDistance),
+                    new Check_GettingShot(this),
                     new BehaviorSelector(new List<BehaviorNode>
                     {
-                        new BehaviorWaitUntil
-                        (
-                            new BehaviorSequence(new List<BehaviorNode>
+                        new BehaviorSequence(new List<BehaviorNode>
+                        {
+                            new Check_AlarmCalled(m_Alarm),
+                            new BehaviorSelector(new List<BehaviorNode>
                             {
-                                new Check_AlarmCalled(m_Alarm),
-                                new BehaviorSelector(new List<BehaviorNode>
+                                new BehaviorSequence(new List<BehaviorNode>
                                 {
-                                    new BehaviorSequence(new List<BehaviorNode>
-                                    {
-                                        new Check_HPLow(this),
-                                        new Task_Flee(GetComponent<NavMeshAgent>(), m_WayPoints[0], m_Player)
-                                    }),
-                                    new Task_Attack(this, m_Player)
-                                })
+                                    new Check_HPLow(this),
+                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
+                                }),
+                                new Task_Attack(this, m_Player)
                             })
-                        ),
+                        }),
                         new BehaviorSequence(new List<BehaviorNode>
                         {
                             new Check_GuardOnWay(m_Alarm, this),
@@ -133,21 +144,55 @@ public class Script_Enemy : TaskBehaviorTree
                                 new BehaviorSequence(new List<BehaviorNode>
                                 {
                                     new Check_HPLow(this),
-                                    new Task_Flee(GetComponent<NavMeshAgent>(), m_WayPoints[0], m_Player)
+                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
                                 }),
                                 new Task_Attack(this, m_Player)
                             })
                         }),
-                        new Task_CallAlarm(GetComponent<NavMeshAgent>(), m_Alarm, this)
+                        new Task_CallAlarm(attachedAgent, m_Alarm, this)
+                    })
+                }),
+                new BehaviorSequence(new List<BehaviorNode>
+                {
+                    new Check_TargetVisible(this, attachedAgent, m_Player, m_VisionDistance),
+                    new BehaviorSelector(new List<BehaviorNode>
+                    {
+                        new BehaviorSequence(new List<BehaviorNode>
+                        {
+                            new Check_AlarmCalled(m_Alarm),
+                            new BehaviorSelector(new List<BehaviorNode>
+                            {
+                                new BehaviorSequence(new List<BehaviorNode>
+                                {
+                                    new Check_HPLow(this),
+                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
+                                }),
+                                new Task_Attack(this, m_Player)
+                            })
+                        }),
+                        new BehaviorSequence(new List<BehaviorNode>
+                        {
+                            new Check_GuardOnWay(m_Alarm, this),
+                            new BehaviorSelector(new List<BehaviorNode>
+                            {
+                                new BehaviorSequence(new List<BehaviorNode>
+                                {
+                                    new Check_HPLow(this),
+                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
+                                }),
+                                new Task_Attack(this, m_Player)
+                            })
+                        }),
+                        new Task_CallAlarm(attachedAgent, m_Alarm, this)
                     })
                 }),
                 new BehaviorSequence(new List<BehaviorNode>
                 {
                     new Check_OthersInCombat(m_Manager),
-                    new Task_MoveToTarget(GetComponent<NavMeshAgent>(), m_Manager)
+                    new Task_MoveToTarget(attachedAgent, m_Manager)
                 })
             }),
-            new Task_Patrol(GetComponent<NavMeshAgent>(), m_WayPoints)
+            new Task_Patrol(attachedAgent, m_WayPoints)
         }) ;
 
         return rootNode;
@@ -184,7 +229,9 @@ public class Script_Enemy : TaskBehaviorTree
     IEnumerator DamageRoutine(float _amount)
     {
         m_TakingDamage = true;
-        for(int i = 0; i < _amount; _amount--)
+        if (m_Player)
+            m_Manager.SetLastKnownLocation(m_Player.position);
+        for (int i = 0; i < _amount; _amount--)
         {
             if (m_Health > 0)
             {

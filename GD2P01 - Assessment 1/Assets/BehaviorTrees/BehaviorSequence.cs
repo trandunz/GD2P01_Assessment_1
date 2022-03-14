@@ -18,14 +18,11 @@ public class BehaviorSequence : BehaviorNode
                 case BehaviorNodeState.FAILURE:
                     p_State = BehaviorNodeState.FAILURE;
                     return p_State;
-                case BehaviorNodeState.SUCCESS:
-                    continue;
                 case BehaviorNodeState.RUNNING:
                     anyChildIsRunning = true;
                     continue;
                 default:
-                    p_State = BehaviorNodeState.SUCCESS;
-                    return p_State;
+                    continue;
             }
         }
 

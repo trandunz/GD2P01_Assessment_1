@@ -22,14 +22,18 @@ public class Task_Attack : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
-        m_Transform.LookAt(new Vector3(m_Target.position.x, m_Transform.position.y, m_Target.position.z));
-        m_EnemyScript.FireBullet();
-
-        if (m_Agent.isActiveAndEnabled)
+        if (m_Target)
         {
-            m_Agent.velocity = Vector3.zero;
-            m_Agent.isStopped = true;
-            m_Agent.ResetPath();
+            m_Transform.LookAt(new Vector3(m_Target.position.x, m_Transform.position.y, m_Target.position.z));
+
+            m_EnemyScript.FireBullet();
+
+            if (m_Agent.isActiveAndEnabled)
+            {
+                m_Agent.velocity = Vector3.zero;
+                m_Agent.isStopped = true;
+                m_Agent.ResetPath();
+            }
         }
 
         p_State = BehaviorNodeState.RUNNING;
