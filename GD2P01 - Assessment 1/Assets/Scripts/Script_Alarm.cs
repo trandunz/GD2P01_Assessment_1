@@ -5,12 +5,13 @@ using UnityEngine;
 public class Script_Alarm : MonoBehaviour
 {
     [SerializeField] bool m_Activated = false;
-    [SerializeField] Script_Reinforcements Script_ReinforcementVan;
+    Script_Reinforcements Script_ReinforcementVan;
     Script_Enemy m_GuardOnWay = null;
     Script_DialoguePopup m_DialoguePopupHandler;
     private void Start()
     {
         m_DialoguePopupHandler = GameObject.FindWithTag("DialoguePopup").GetComponent<Script_DialoguePopup>();
+        Script_ReinforcementVan = GameObject.FindWithTag("Reinforcements").GetComponent<Script_Reinforcements>();
     }
 
     public bool IsActivated()

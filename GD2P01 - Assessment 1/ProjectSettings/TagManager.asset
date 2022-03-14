@@ -9,6 +9,7 @@ TagManager:
   - EnemyManager
   - DialoguePopup
   - Alarm
+  - Reinforcements
   layers:
   - Default
   - TransparentFX
