@@ -9,6 +9,7 @@ public class Task_CallAlarm : BehaviorNode
     Script_Alarm m_Alarm;
     NavMeshAgent m_Agent;
     Script_Enemy m_Enemy;
+    bool m_FirstTimeScene = false;
     #endregion
 
     #region Public
@@ -20,6 +21,12 @@ public class Task_CallAlarm : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
+        if (!m_FirstTimeScene)
+        {
+            m_Enemy.GetManager().HandleFirstTimeScene();
+        }
+        m_FirstTimeScene = true;
+
         m_Agent.SetDestination(m_Alarm.transform.position);
         if (m_Agent)
         {

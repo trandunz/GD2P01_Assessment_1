@@ -6,6 +6,8 @@ public class Script_EnemyManager : MonoBehaviour
 {
     [SerializeField] List<Script_Enemy> m_Enemies = new List<Script_Enemy>();
     Vector3 m_LastKnownLocation;
+    Script_DialoguePopup m_DialoguePopupHandler;
+
 
     #region Public
     public List<Script_Enemy> GetEnemies()
@@ -39,20 +41,22 @@ public class Script_EnemyManager : MonoBehaviour
         }
         return false;
     }
+    public void HandleFirstTimeScene()
+    {
+        m_DialoguePopupHandler.EnemyFoundMessage();
+    }
     #endregion
 
     #region Private
     void Start()
     {
+        m_DialoguePopupHandler = GameObject.FindWithTag("DialoguePopup").GetComponent<Script_DialoguePopup>();
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         for(int i = 0; i < enemies.Length; i++)
         {
             m_Enemies.Add(enemies[i].GetComponent<Script_Enemy>());
         }
 
-    }
-    private void Update()
-    {
     }
     #endregion
 }
