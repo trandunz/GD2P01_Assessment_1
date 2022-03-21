@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Unit: {fileID: 0}
   m_Body: {fileID: 5812648759162649945}
   m_SpawnLocation: {fileID: 8328714946416902435}
+  m_WayPoints: []
 --- !u!1 &4486684831334223268
 GameObject:
   m_ObjectHideFlags: 0

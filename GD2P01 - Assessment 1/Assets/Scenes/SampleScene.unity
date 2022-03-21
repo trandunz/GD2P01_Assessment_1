@@ -1251,7 +1251,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &63699338
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1269,7 +1269,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &63699339
 Transform:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1283,7 +1283,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &63699340
 MeshCollider:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1316,7 +1316,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 22252
+    surfaceParameter: 22268
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 1895610266737494867
@@ -1588,7 +1588,7 @@ MonoBehaviour:
     Generation: 554
 --- !u!1 &87918690
 GameObject:
-  m_ObjectHideFlags: 3
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1605,7 +1605,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &87918691
 Transform:
-  m_ObjectHideFlags: 11
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1623,7 +1623,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &87918692
 MonoBehaviour:
-  m_ObjectHideFlags: 27
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14083,7 +14083,7 @@ MonoBehaviour:
     Generation: 1140
 --- !u!1 &829741560
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14102,7 +14102,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &829741561
 Transform:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14116,7 +14116,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &829741562
 MeshRenderer:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14157,7 +14157,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &829741563
 MeshFilter:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -14184,7 +14184,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 22224
+    surfaceParameter: 22240
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: 1814483311406928424
@@ -14192,7 +14192,7 @@ MonoBehaviour:
     vertexCount: 1899
     indexCount: 3351
   HasGeneratedNormals: 0
-  HasUV2: 0
+  HasUV2: 1
   LightingHashValue: 0
 --- !u!1001 &845051509
 PrefabInstance:
@@ -15100,7 +15100,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 300fe943029abfb49bedba6db2ffddca, type: 3}
 --- !u!1 &944335083
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -15119,7 +15119,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &944335084
 Transform:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -15133,7 +15133,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &944335085
 MeshRenderer:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -15174,7 +15174,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &944335086
 MeshFilter:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -15201,7 +15201,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 22190
+    surfaceParameter: 22206
     meshQueryIndex: 6
     subMeshQueryIndex: 0
     geometryHashValue: -44683447671776704
@@ -15209,7 +15209,7 @@ MonoBehaviour:
     vertexCount: 66
     indexCount: 102
   HasGeneratedNormals: 0
-  HasUV2: 0
+  HasUV2: 1
   LightingHashValue: 0
 --- !u!1001 &959703393
 PrefabInstance:
@@ -17018,7 +17018,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1101126516
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17037,7 +17037,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &1101126517
 Transform:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17051,7 +17051,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1101126518
 MeshRenderer:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17092,7 +17092,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1101126519
 MeshFilter:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17119,7 +17119,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 22056
+    surfaceParameter: 22072
     meshQueryIndex: 5
     subMeshQueryIndex: 0
     geometryHashValue: 6869683275900849496
@@ -17127,7 +17127,7 @@ MonoBehaviour:
     vertexCount: 136
     indexCount: 252
   HasGeneratedNormals: 0
-  HasUV2: 0
+  HasUV2: 1
   LightingHashValue: 0
 --- !u!1 &1104694918
 GameObject:

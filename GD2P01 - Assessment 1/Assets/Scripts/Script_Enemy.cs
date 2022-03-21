@@ -5,9 +5,17 @@ using UnityEngine;
 
 public class Script_Enemy : TaskBehaviorTree
 {
+    enum ENEMYTYPE
+    {
+        GUARD = 0,
+        SWAT = 1,
+        PUTIN = 2
+    }
+
     #region Member Variables
     public bool m_SeenPlayer = false, m_OnRoute = false, m_InCombat = false;
     [SerializeField] static float m_MaxHealth = 100.0f;
+    [SerializeField] ENEMYTYPE m_EnemyType = ENEMYTYPE.GUARD;
     [SerializeField] float m_VisionDistance = 10.0f, m_DamageInterval_s = 0.2f, m_AlertSpeed_s = 1.0f, m_AlertDecay_s = 5.0f;
     [SerializeField] Transform[] m_WayPoints;
     [SerializeField] Script_Gun m_ActiveWeapon;
@@ -114,6 +122,70 @@ public class Script_Enemy : TaskBehaviorTree
         GameObject player = GameObject.FindWithTag("Player");
         if (player)
             m_Player = player.transform;
+        
+        switch(m_EnemyType)
+        {
+            case ENEMYTYPE.GUARD:
+                {
+                    return GuardTreeSetup();
+                    break;
+                }
+            default:
+                break;
+        }
+        return null;
+    }
+    #endregion
+
+    #region Private
+    void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.tag == "Bullet")
+        { 
+            Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
+            if (bulletScript.IsFriendly())
+            {
+                if (!m_TakingDamage)
+                    StartCoroutine(DamageRoutine(bulletScript.GetDamage()));
+
+            }
+        }
+    }
+    void OnTriggerStay(Collider _other)
+    {
+        if (_other.gameObject.tag == "Bullet")
+        {
+            Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
+            if (bulletScript.IsFriendly())
+            {
+                if (!m_TakingDamage)
+                    StartCoroutine(DamageRoutine(bulletScript.GetDamage()));
+
+            }
+        }
+    }
+    IEnumerator DamageRoutine(float _amount)
+    {
+        m_TakingDamage = true;
+        if (m_Player)
+            m_Manager.SetLastKnownLocation(m_Player.position);
+        for (int i = 0; i < _amount; _amount--)
+        {
+            if (m_Health > 0)
+            {
+                m_Health--;
+            }
+            else
+            {
+                yield return null;
+                CheckForDeath();
+            }
+        }
+        yield return new WaitForSeconds(m_DamageInterval_s);
+        m_TakingDamage = false;
+    }
+    BehaviorNode GuardTreeSetup()
+    {
         BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
         {
             new BehaviorSelector(new List<BehaviorNode>
@@ -193,58 +265,7 @@ public class Script_Enemy : TaskBehaviorTree
                 })
             }),
             new Task_Patrol(attachedAgent, m_WayPoints)
-        }) ;
-
-        return rootNode;
-    }
-    #endregion
-
-    #region Private
-    void OnTriggerEnter(Collider _other)
-    {
-        if (_other.gameObject.tag == "Bullet")
-        { 
-            Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
-            if (bulletScript.IsFriendly())
-            {
-                if (!m_TakingDamage)
-                    StartCoroutine(DamageRoutine(bulletScript.GetDamage()));
-
-            }
-        }
-    }
-    void OnTriggerStay(Collider _other)
-    {
-        if (_other.gameObject.tag == "Bullet")
-        {
-            Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
-            if (bulletScript.IsFriendly())
-            {
-                if (!m_TakingDamage)
-                    StartCoroutine(DamageRoutine(bulletScript.GetDamage()));
-
-            }
-        }
-    }
-    IEnumerator DamageRoutine(float _amount)
-    {
-        m_TakingDamage = true;
-        if (m_Player)
-            m_Manager.SetLastKnownLocation(m_Player.position);
-        for (int i = 0; i < _amount; _amount--)
-        {
-            if (m_Health > 0)
-            {
-                m_Health--;
-            }
-            else
-            {
-                yield return null;
-                CheckForDeath();
-            }
-        }
-        yield return new WaitForSeconds(m_DamageInterval_s);
-        m_TakingDamage = false;
+        });
     }
     #endregion
 }
