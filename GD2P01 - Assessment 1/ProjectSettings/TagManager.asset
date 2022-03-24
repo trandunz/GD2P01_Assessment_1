@@ -10,6 +10,7 @@ TagManager:
   - DialoguePopup
   - Alarm
   - Reinforcements
+  - HealthStation
   layers:
   - Default
   - TransparentFX

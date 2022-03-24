@@ -22,13 +22,29 @@ public class Script_Enemy : TaskBehaviorTree
     Script_EnemyManager m_Manager;
     Script_Alarm m_Alarm;
     Transform m_Player;
+    NavMeshAgent m_AttachedAgent;
+    Transform m_HealthStation;
     Vector3 m_DirectionToPlayer;
     
     float m_Health = m_MaxHealth, m_AlertLevel = 0.0f;
-    bool m_TakingDamage = false;
+    bool m_TakingDamage = false, m_Healing = false;
     #endregion
 
     #region Public
+    public void Heal(float _amount)
+    {
+        if (!m_Healing)
+        {
+            StartCoroutine(HealRoutine(_amount));
+        }
+    }
+    public float GetAlertSpeed()
+    {
+        if (m_AlertLevel <= m_AlertSpeed_s)
+            return m_AlertSpeed_s;
+        else
+            return m_AlertDecay_s;
+    }
     public void SetAlertMax()
     {
         if (m_Player)
@@ -105,7 +121,7 @@ public class Script_Enemy : TaskBehaviorTree
     }
     public void FireBullet()
     {
-        m_ActiveWeapon.Fire();
+        m_ActiveWeapon.Fire(m_DirectionToPlayer);
     }
     public void SetDirectionToPlayer(Vector3 _direction)
     {
@@ -118,7 +134,8 @@ public class Script_Enemy : TaskBehaviorTree
     {
         m_Manager = GameObject.FindWithTag("EnemyManager").GetComponent<Script_EnemyManager>();
         m_Alarm = GameObject.FindWithTag("Alarm").GetComponent<Script_Alarm>();
-        NavMeshAgent attachedAgent = GetComponent<NavMeshAgent>();
+        m_AttachedAgent = GetComponent<NavMeshAgent>();
+        m_HealthStation = GameObject.FindGameObjectWithTag("HealthStation").transform;
         GameObject player = GameObject.FindWithTag("Player");
         if (player)
             m_Player = player.transform;
@@ -128,6 +145,11 @@ public class Script_Enemy : TaskBehaviorTree
             case ENEMYTYPE.GUARD:
                 {
                     return GuardTreeSetup();
+                    break;
+                }
+            case ENEMYTYPE.SWAT:
+                {
+                    return SwatTreeSetup();
                     break;
                 }
             default:
@@ -177,6 +199,7 @@ public class Script_Enemy : TaskBehaviorTree
             }
             else
             {
+                m_TakingDamage = false;
                 yield return null;
                 CheckForDeath();
             }
@@ -184,14 +207,35 @@ public class Script_Enemy : TaskBehaviorTree
         yield return new WaitForSeconds(m_DamageInterval_s);
         m_TakingDamage = false;
     }
+
+    IEnumerator HealRoutine(float _amount)
+    {
+        m_Healing = true;
+        for (int i = 0; i < _amount; _amount--)
+        {
+            if (m_Health < m_MaxHealth)
+            {
+                m_Health++;
+            }
+            else
+            {
+                m_Healing = false;
+                yield return null;
+            }
+        }
+        yield return new WaitUntil(() => m_Health >= m_MaxHealth);
+        m_Healing = false;
+    }
     BehaviorNode GuardTreeSetup()
     {
         BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
         {
             new BehaviorSelector(new List<BehaviorNode>
             {
+                
                 new BehaviorSequence(new List<BehaviorNode>
                 {
+                    new Check_TargetAlive(m_Player),
                     new Check_GettingShot(this),
                     new BehaviorSelector(new List<BehaviorNode>
                     {
@@ -203,7 +247,7 @@ public class Script_Enemy : TaskBehaviorTree
                                 new BehaviorSequence(new List<BehaviorNode>
                                 {
                                     new Check_HPLow(this),
-                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
+                                    new Task_Flee(m_AttachedAgent, m_HealthStation, m_Player, m_VisionDistance)
                                 }),
                                 new Task_Attack(this, m_Player)
                             })
@@ -216,17 +260,18 @@ public class Script_Enemy : TaskBehaviorTree
                                 new BehaviorSequence(new List<BehaviorNode>
                                 {
                                     new Check_HPLow(this),
-                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
+                                    new Task_Flee(m_AttachedAgent, m_HealthStation, m_Player, m_VisionDistance)
                                 }),
                                 new Task_Attack(this, m_Player)
                             })
                         }),
-                        new Task_CallAlarm(attachedAgent, m_Alarm, this)
+                        new Task_CallAlarm(m_AttachedAgent, m_Alarm, this)
                     })
                 }),
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetVisible(this, attachedAgent, m_Player, m_VisionDistance),
+                    new Check_TargetAlive(m_Player),
+                    new Check_TargetVisible(this, m_AttachedAgent, m_Player, m_VisionDistance),
                     new BehaviorSelector(new List<BehaviorNode>
                     {
                         new BehaviorSequence(new List<BehaviorNode>
@@ -237,7 +282,7 @@ public class Script_Enemy : TaskBehaviorTree
                                 new BehaviorSequence(new List<BehaviorNode>
                                 {
                                     new Check_HPLow(this),
-                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
+                                    new Task_Flee(m_AttachedAgent, m_HealthStation, m_Player, m_VisionDistance)
                                 }),
                                 new Task_Attack(this, m_Player)
                             })
@@ -250,22 +295,54 @@ public class Script_Enemy : TaskBehaviorTree
                                 new BehaviorSequence(new List<BehaviorNode>
                                 {
                                     new Check_HPLow(this),
-                                    new Task_Flee(attachedAgent, m_WayPoints[0], m_Player)
+                                    new Task_Flee(m_AttachedAgent, m_HealthStation, m_Player, m_VisionDistance)
                                 }),
                                 new Task_Attack(this, m_Player)
                             })
                         }),
-                        new Task_CallAlarm(attachedAgent, m_Alarm, this)
+                        new Task_CallAlarm(m_AttachedAgent, m_Alarm, this)
                     })
                 }),
                 new BehaviorSequence(new List<BehaviorNode>
                 {
+                    new Check_TargetAlive(m_Player),
                     new Check_OthersInCombat(m_Manager),
-                    new Task_MoveToTarget(attachedAgent, m_Manager)
+                    new Task_MoveToTarget(m_AttachedAgent, m_Manager)
                 })
             }),
-            new Task_Patrol(attachedAgent, m_WayPoints)
+            new Task_Patrol(m_AttachedAgent, m_WayPoints)
         });
+        return rootNode;
+    }
+    BehaviorNode SwatTreeSetup()
+    {
+        BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
+        {
+            new BehaviorSelector(new List<BehaviorNode>
+            {
+
+                new BehaviorSequence(new List<BehaviorNode>
+                {
+                    new Check_TargetAlive(m_Player),
+                    new Check_GettingShot(this),
+                    new Task_Attack(this, m_Player)
+                }),
+                new BehaviorSequence(new List<BehaviorNode>
+                {
+                    new Check_TargetAlive(m_Player),
+                    new Check_TargetVisible(this, m_AttachedAgent, m_Player, m_VisionDistance),
+                    new Task_Attack(this, m_Player)
+                }),
+                new BehaviorSequence(new List<BehaviorNode>
+                {
+                    new Check_TargetAlive(m_Player),
+                    new Check_OthersInCombat(m_Manager),
+                    new Task_MoveToTarget(m_AttachedAgent, m_Manager)
+                })
+            }),
+            new Task_Patrol(m_AttachedAgent, m_WayPoints)
+        });
+        return rootNode;
     }
     #endregion
 }

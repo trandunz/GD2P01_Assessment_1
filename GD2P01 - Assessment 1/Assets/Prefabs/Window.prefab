@@ -108,3 +108,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23022290efabb3049a2f1e8db29dfc67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GlassBreakSoundPrefab: {fileID: 3868264915025458034, guid: f7161e74ec5473b4091a52a2a533fab3, type: 3}
