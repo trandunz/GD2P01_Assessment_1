@@ -140,16 +140,13 @@ MonoBehaviour:
   m_SeenPlayer: 0
   m_OnRoute: 0
   m_InCombat: 0
+  m_MaxHealth: 100
   m_EnemyType: 1
   m_VisionDistance: 10
   m_DamageInterval_s: 0.2
   m_AlertSpeed_s: 1
   m_AlertDecay_s: 5
-  m_WayPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_WayPoints: []
   m_ActiveWeapon: {fileID: 5500298702627850626}
 --- !u!114 &4585149639643391724
 MonoBehaviour:
@@ -327,7 +324,7 @@ GameObject:
   - component: {fileID: 9025584547831989092}
   - component: {fileID: 5179676321679839836}
   - component: {fileID: 1298879893793911206}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +419,7 @@ GameObject:
   - component: {fileID: 3801204746953772943}
   - component: {fileID: 2636848803219289736}
   - component: {fileID: 2450177401356238245}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Shield (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

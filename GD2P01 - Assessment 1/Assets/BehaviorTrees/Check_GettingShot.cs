@@ -17,6 +17,7 @@ public class Check_GettingShot : BehaviorNode
     {
         if (m_EnemyScript.IsTakingDamage())
         {
+            m_EnemyScript.GetManager().SetLastKnownLocation(m_EnemyScript.GetPlayerCache().position);
             m_EnemyScript.SetAlertMax();
             p_State = BehaviorNodeState.SUCCESS;
         }

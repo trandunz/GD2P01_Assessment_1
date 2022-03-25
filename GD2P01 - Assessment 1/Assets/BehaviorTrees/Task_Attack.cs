@@ -24,6 +24,14 @@ public class Task_Attack : BehaviorNode
     {
         if (m_Target)
         {
+            if (m_EnemyScript.IsInCombat())
+            {
+                foreach (Script_Enemy enemy in m_EnemyScript.GetManager().GetEnemies())
+                {
+                    enemy.SetAlertMax();
+                }
+            }
+
             m_Transform.LookAt(new Vector3(m_Target.position.x, m_Transform.position.y, m_Target.position.z));
 
             m_EnemyScript.FireBullet();

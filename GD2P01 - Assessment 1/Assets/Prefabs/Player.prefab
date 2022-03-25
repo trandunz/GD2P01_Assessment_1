@@ -306,7 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveSpeed: 5
   m_DodgeSpeed: 10
-  m_DodgeLength_s: 0.5
+  m_DodgeLength_s: 0.4
   m_TurnSpeed: 0.1
   m_InteractDistance: 5
   m_DamageInterval_s: 0.2
@@ -358,6 +358,10 @@ PrefabInstance:
     - target: {fileID: 3118648323269554601, guid: 0d173d7101405a347ac127841c2f4181, type: 3}
       propertyPath: m_Name
       value: Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426373236543097922, guid: 0d173d7101405a347ac127841c2f4181, type: 3}
+      propertyPath: m_Pitch
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7206431191465064248, guid: 0d173d7101405a347ac127841c2f4181, type: 3}
       propertyPath: m_RootOrder

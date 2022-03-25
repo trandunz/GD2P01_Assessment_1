@@ -11,10 +11,9 @@ public class Script_Enemy : TaskBehaviorTree
         SWAT = 1,
         PUTIN = 2
     }
-
     #region Member Variables
     public bool m_SeenPlayer = false, m_OnRoute = false, m_InCombat = false;
-    [SerializeField] static float m_MaxHealth = 100.0f;
+    [SerializeField] float m_MaxHealth = 100.0f;
     [SerializeField] ENEMYTYPE m_EnemyType = ENEMYTYPE.GUARD;
     [SerializeField] float m_VisionDistance = 10.0f, m_DamageInterval_s = 0.2f, m_AlertSpeed_s = 1.0f, m_AlertDecay_s = 5.0f;
     [SerializeField] Transform[] m_WayPoints;
@@ -26,7 +25,7 @@ public class Script_Enemy : TaskBehaviorTree
     Transform m_HealthStation;
     Vector3 m_DirectionToPlayer;
     
-    float m_Health = m_MaxHealth, m_AlertLevel = 0.0f;
+    float m_Health = 100.0f, m_AlertLevel = 0.0f;
     bool m_TakingDamage = false, m_Healing = false;
     #endregion
 
@@ -40,10 +39,10 @@ public class Script_Enemy : TaskBehaviorTree
     }
     public float GetAlertSpeed()
     {
-        if (m_AlertLevel <= m_AlertSpeed_s)
-            return m_AlertSpeed_s;
-        else
+        if (m_InCombat)
             return m_AlertDecay_s;
+        else
+            return m_AlertSpeed_s;
     }
     public void SetAlertMax()
     {
@@ -127,11 +126,17 @@ public class Script_Enemy : TaskBehaviorTree
     {
         m_DirectionToPlayer = _direction;
     }
+    public Transform GetPlayerCache()
+    {
+        m_DirectionToPlayer = (m_Player.position - (transform.position + Vector3.up * 0.5f)).normalized;
+        return m_Player;
+    }
     #endregion
 
     #region Protected
     protected override BehaviorNode SetupTree()
     {
+        m_Health = m_MaxHealth;
         m_Manager = GameObject.FindWithTag("EnemyManager").GetComponent<Script_EnemyManager>();
         m_Alarm = GameObject.FindWithTag("Alarm").GetComponent<Script_Alarm>();
         m_AttachedAgent = GetComponent<NavMeshAgent>();
@@ -150,6 +155,11 @@ public class Script_Enemy : TaskBehaviorTree
             case ENEMYTYPE.SWAT:
                 {
                     return SwatTreeSetup();
+                    break;
+                }
+            case ENEMYTYPE.PUTIN:
+                {
+                    return PutinTreeSetup();
                     break;
                 }
             default:
@@ -235,7 +245,7 @@ public class Script_Enemy : TaskBehaviorTree
                 
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetAlive(m_Player),
+                    new Check_TargetAlive(m_Player, this),
                     new Check_GettingShot(this),
                     new BehaviorSelector(new List<BehaviorNode>
                     {
@@ -270,7 +280,7 @@ public class Script_Enemy : TaskBehaviorTree
                 }),
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetAlive(m_Player),
+                    new Check_TargetAlive(m_Player, this),
                     new Check_TargetVisible(this, m_AttachedAgent, m_Player, m_VisionDistance),
                     new BehaviorSelector(new List<BehaviorNode>
                     {
@@ -305,7 +315,7 @@ public class Script_Enemy : TaskBehaviorTree
                 }),
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetAlive(m_Player),
+                    new Check_TargetAlive(m_Player, this),
                     new Check_OthersInCombat(m_Manager),
                     new Task_MoveToTarget(m_AttachedAgent, m_Manager)
                 })
@@ -323,21 +333,50 @@ public class Script_Enemy : TaskBehaviorTree
 
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetAlive(m_Player),
+                    new Check_TargetAlive(m_Player, this),
                     new Check_GettingShot(this),
                     new Task_Attack(this, m_Player)
                 }),
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetAlive(m_Player),
+                    new Check_TargetAlive(m_Player, this),
                     new Check_TargetVisible(this, m_AttachedAgent, m_Player, m_VisionDistance),
                     new Task_Attack(this, m_Player)
                 }),
                 new BehaviorSequence(new List<BehaviorNode>
                 {
-                    new Check_TargetAlive(m_Player),
+                    new Check_TargetAlive(m_Player, this),
                     new Check_OthersInCombat(m_Manager),
                     new Task_MoveToTarget(m_AttachedAgent, m_Manager)
+                })
+            }),
+            new Task_Patrol(m_AttachedAgent, m_WayPoints)
+        });
+        return rootNode;
+    }
+    BehaviorNode PutinTreeSetup()
+    {
+        BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
+        {
+            new BehaviorSelector(new List<BehaviorNode>
+            {
+
+                new BehaviorSequence(new List<BehaviorNode>
+                {
+                    new Check_TargetAlive(m_Player, this),
+                    new Check_GettingShot(this),
+                    new Task_Attack(this, m_Player)
+                }),
+                new BehaviorSequence(new List<BehaviorNode>
+                {
+                    new Check_TargetAlive(m_Player, this),
+                    new Check_TargetVisible(this, m_AttachedAgent, m_Player, m_VisionDistance),
+                    new Task_Attack(this, m_Player)
+                }),
+                new BehaviorSequence(new List<BehaviorNode>
+                {
+                    new Check_AlarmCalled(m_Alarm),
+                    new Task_Escape(this, GameObject.FindWithTag("Reinforcements").transform, m_WayPoints[0])
                 })
             }),
             new Task_Patrol(m_AttachedAgent, m_WayPoints)

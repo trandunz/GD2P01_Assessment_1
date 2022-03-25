@@ -15,11 +15,11 @@ C:/Users/trand/Documents/GitHub/GD2P01_Assessment_1/GD2P01 - Assessment 1
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-51048
+58440
 Successfully changed project path to: C:/Users/trand/Documents/GitHub/GD2P01_Assessment_1/GD2P01 - Assessment 1
 C:/Users/trand/Documents/GitHub/GD2P01_Assessment_1/GD2P01 - Assessment 1
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 33.51 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 34.72 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.24f1 (79c78de19888)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/Resources/UnitySubsystems
@@ -35,75 +35,75 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56384
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56220
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.001862 seconds.
+Registered in 0.001840 seconds.
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 34.04 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 33.40 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.449 seconds
+- Completed reload, in  0.450 seconds
 Domain Reload Profiling:
-	ReloadAssembly (449ms)
+	ReloadAssembly (450ms)
 		BeginReloadAssembly (40ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (351ms)
-			LoadAssemblies (39ms)
+		EndReloadAssembly (352ms)
+			LoadAssemblies (38ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (115ms)
+			SetupTypeCache (114ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (25ms)
-			SetupLoadedEditorAssemblies (133ms)
+			RebuildScriptCaches (24ms)
+			SetupLoadedEditorAssemblies (135ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (3ms)
+				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (34ms)
+				RefreshPlugins (33ms)
 				BeforeProcessingInitializeOnLoad (11ms)
-				ProcessInitializeOnLoadAttributes (63ms)
-				ProcessInitializeOnLoadMethodAttributes (21ms)
+				ProcessInitializeOnLoadAttributes (64ms)
+				ProcessInitializeOnLoadMethodAttributes (22ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.003574 seconds.
+Registered in 0.003797 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Refreshing native plugins compatible for Editor in 0.39 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.784 seconds
+- Completed reload, in  0.798 seconds
 Domain Reload Profiling:
-	ReloadAssembly (785ms)
-		BeginReloadAssembly (113ms)
+	ReloadAssembly (799ms)
+		BeginReloadAssembly (115ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (3ms)
+			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (15ms)
-		EndReloadAssembly (623ms)
-			LoadAssemblies (64ms)
+		EndReloadAssembly (635ms)
+			LoadAssemblies (66ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (214ms)
+			SetupTypeCache (218ms)
 			ReleaseScriptCaches (0ms)
 			RebuildScriptCaches (35ms)
-			SetupLoadedEditorAssemblies (236ms)
+			SetupLoadedEditorAssemblies (242ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (61ms)
-				ProcessInitializeOnLoadAttributes (157ms)
+				BeforeProcessingInitializeOnLoad (62ms)
+				ProcessInitializeOnLoadAttributes (162ms)
 				ProcessInitializeOnLoadMethodAttributes (7ms)
 				AfterProcessingInitializeOnLoad (6ms)
 				EditorAssembliesLoaded (0ms)
@@ -112,15 +112,15 @@ Domain Reload Profiling:
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 0.37 ms, found 3 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Refreshing native plugins compatible for Editor in 0.38 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1810 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 82.0 MB.
-System memory in use after: 82.1 MB.
+System memory in use before: 81.8 MB.
+System memory in use after: 81.9 MB.
 
-Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 2242.
-Total: 2.816100 ms (FindLiveObjects: 0.156700 ms CreateObjectMapping: 0.037800 ms MarkObjects: 2.557100 ms  DeleteObjects: 0.063300 ms)
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 2240.
+Total: 2.745900 ms (FindLiveObjects: 0.162900 ms CreateObjectMapping: 0.038600 ms MarkObjects: 2.479300 ms  DeleteObjects: 0.064000 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -134,57 +134,82 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  path: Assets/Sounds/Alarm.mp3
-  artifactKey: Guid(656f5703e36940646acd57630fffc27a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sounds/Alarm.mp3 using Guid(656f5703e36940646acd57630fffc27a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a72ccbf154fdfe93b64f1e04f551a571') in 0.071672 seconds 
-  Import took 0.074452 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000161 seconds.
-  path: Assets/Sounds
-  artifactKey: Guid(2e28c768ce3268f448d3299531a4ecc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sounds using Guid(2e28c768ce3268f448d3299531a4ecc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bbd7ac5b7897cd7641591d50d7487cd6') in 0.005668 seconds 
-  Import took 0.007683 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 4.694934 seconds.
-  path: Assets/Sounds/FREE SOUND FX   Doors   Sci Fi Space Door (1).mp3
-  artifactKey: Guid(45b6aa5e562b80643a07b6677e210b77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sounds/FREE SOUND FX   Doors   Sci Fi Space Door (1).mp3 using Guid(45b6aa5e562b80643a07b6677e210b77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a140a365df7e28a96533f9f07c9b7a90') in 0.005899 seconds 
-  Import took 0.008299 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 6.518793 seconds.
-  path: Assets/Sounds/DoorOpen.mp3
-  artifactKey: Guid(45b6aa5e562b80643a07b6677e210b77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sounds/DoorOpen.mp3 using Guid(45b6aa5e562b80643a07b6677e210b77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '00fc45815a72ae1901145d1bb7cb5260') in 0.004516 seconds 
-  Import took 0.007016 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 38.313130 seconds.
-  path: Assets/Prefabs/Door.prefab
-  artifactKey: Guid(b21030ccb4faf3046a5dfa2a22801b32) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Door.prefab using Guid(b21030ccb4faf3046a5dfa2a22801b32) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2ace108fdb75537591cbc2e5ef6bfb12') in 0.028396 seconds 
-  Import took 0.030965 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 4.232443 seconds.
   path: Assets/Scenes
   artifactKey: Guid(d4b2f41b0afea8e43a645d0dbb124c10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes using Guid(d4b2f41b0afea8e43a645d0dbb124c10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7f6068594f39c6c1b36373952f26fda6') in 0.004509 seconds 
-  Import took 0.006962 seconds .
+Start importing Assets/Scenes using Guid(d4b2f41b0afea8e43a645d0dbb124c10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7f6068594f39c6c1b36373952f26fda6') in 0.007567 seconds 
+  Import took 0.009940 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 12.072360 seconds.
-  path: Assets/Sounds/FREE SOUND FX   Doors   Sci Fi Space Door.mp3
-  artifactKey: Guid(03a39140c50ba5f458cfc08ab8d2ab06) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sounds/FREE SOUND FX   Doors   Sci Fi Space Door.mp3 using Guid(03a39140c50ba5f458cfc08ab8d2ab06) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a1350910b61cbe36e5f2fb95e60d4ba6') in 0.004719 seconds 
-  Import took 0.007249 seconds .
+  Time since last request: 0.000171 seconds.
+  path: Assets/Scenes/MainMenu.unity
+  artifactKey: Guid(2134d721935b83f40ac2beb8675e34cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/MainMenu.unity using Guid(2134d721935b83f40ac2beb8675e34cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f691988ddc450d243ea284f93c9834a') in 0.011771 seconds 
+  Import took 0.014099 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003310 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 0.39 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.726 seconds
+Domain Reload Profiling:
+	ReloadAssembly (726ms)
+		BeginReloadAssembly (87ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (3ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (25ms)
+		EndReloadAssembly (591ms)
+			LoadAssemblies (64ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (210ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (29ms)
+			SetupLoadedEditorAssemblies (214ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (55ms)
+				ProcessInitializeOnLoadAttributes (143ms)
+				ProcessInitializeOnLoadMethodAttributes (6ms)
+				AfterProcessingInitializeOnLoad (5ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.37 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1776 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 78.9 MB.
+System memory in use after: 79.0 MB.
+
+Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 2242.
+Total: 2.654800 ms (FindLiveObjects: 0.155900 ms CreateObjectMapping: 0.050000 ms MarkObjects: 2.428900 ms  DeleteObjects: 0.019300 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 170.930511 seconds.
+  path: Assets/Scenes/SampleScene.unity
+  artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/SampleScene.unity using Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8168ca8fe0dd1a6fb07980e8b2afe532') in 0.013805 seconds 
+  Import took 0.016263 seconds .
 
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file

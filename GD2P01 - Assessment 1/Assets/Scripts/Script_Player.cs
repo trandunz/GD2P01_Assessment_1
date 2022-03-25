@@ -83,9 +83,9 @@ public class Script_Player : MonoBehaviour
     }
     void SetGameObjectStanding()
     {
-        if(m_Mesh.transform.localScale != Vector3.one)
+        if(m_Mesh.transform.localScale != Vector3.one && !m_Crouched)
         {
-            m_Mesh.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            m_Mesh.transform.localScale = Vector3.one;
             m_Controller.height = 2.0f;
         }
     }
