@@ -14,6 +14,10 @@ public class Script_EnemyManager : MonoBehaviour
     {
         return m_Enemies;
     }
+    public  void RemoveEnemy(Script_Enemy _enemy)
+    {
+        m_Enemies.Remove(_enemy);
+    }
     public void AddEnemy(ref Script_Enemy _enemy)
     {
         m_Enemies.Add(_enemy);

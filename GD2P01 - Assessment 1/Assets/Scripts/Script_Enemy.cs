@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Script_Enemy : TaskBehaviorTree
 {
-    enum ENEMYTYPE
+    public enum ENEMYTYPE
     {
         GUARD = 0,
         SWAT = 1,
@@ -30,6 +30,10 @@ public class Script_Enemy : TaskBehaviorTree
     #endregion
 
     #region Public
+    public ENEMYTYPE GetEnemyType()
+    {
+        return m_EnemyType;
+    }
     public void Heal(float _amount)
     {
         if (!m_Healing)
@@ -95,6 +99,7 @@ public class Script_Enemy : TaskBehaviorTree
     {
         if (m_Health <= 0.0f)
         {
+            m_Manager.RemoveEnemy(this);
             Destroy(gameObject);
         }
     }
@@ -150,17 +155,14 @@ public class Script_Enemy : TaskBehaviorTree
             case ENEMYTYPE.GUARD:
                 {
                     return GuardTreeSetup();
-                    break;
                 }
             case ENEMYTYPE.SWAT:
                 {
                     return SwatTreeSetup();
-                    break;
                 }
             case ENEMYTYPE.PUTIN:
                 {
                     return PutinTreeSetup();
-                    break;
                 }
             default:
                 break;
