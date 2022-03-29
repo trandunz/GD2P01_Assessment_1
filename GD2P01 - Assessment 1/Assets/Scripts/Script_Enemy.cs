@@ -24,7 +24,8 @@ public class Script_Enemy : TaskBehaviorTree
     NavMeshAgent m_AttachedAgent;
     Transform m_HealthStation;
     Vector3 m_DirectionToPlayer;
-    
+    int m_RandomSelection;
+
     float m_Health = 100.0f, m_AlertLevel = 0.0f;
     bool m_TakingDamage = false, m_Healing = false;
     #endregion
@@ -73,7 +74,7 @@ public class Script_Enemy : TaskBehaviorTree
     }
     public bool HealthLow()
     {
-        if (m_Health < 50.0f)
+        if (m_Health < ((m_MaxHealth/2) + m_RandomSelection % 20))
         {
             return true;
         }
@@ -97,7 +98,7 @@ public class Script_Enemy : TaskBehaviorTree
     }
     public void CheckForDeath()
     {
-        if (m_Health <= 0.0f)
+        if (m_Health <= 0)
         {
             m_Manager.RemoveEnemy(this);
             Destroy(gameObject);
@@ -147,6 +148,7 @@ public class Script_Enemy : TaskBehaviorTree
         m_AttachedAgent = GetComponent<NavMeshAgent>();
         m_HealthStation = GameObject.FindGameObjectWithTag("HealthStation").transform;
         GameObject player = GameObject.FindWithTag("Player");
+
         if (player)
             m_Player = player.transform;
         
@@ -201,6 +203,10 @@ public class Script_Enemy : TaskBehaviorTree
     IEnumerator DamageRoutine(float _amount)
     {
         m_TakingDamage = true;
+        CheckForDeath();
+        Random.InitState((int)Time.realtimeSinceStartup);
+        m_RandomSelection = Random.Range(-9999, 9999);
+
         if (m_Player)
             m_Manager.SetLastKnownLocation(m_Player.position);
         for (int i = 0; i < _amount; _amount--)
@@ -213,7 +219,6 @@ public class Script_Enemy : TaskBehaviorTree
             {
                 m_TakingDamage = false;
                 yield return null;
-                CheckForDeath();
             }
         }
         yield return new WaitForSeconds(m_DamageInterval_s);

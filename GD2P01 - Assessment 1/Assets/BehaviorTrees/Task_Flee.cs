@@ -22,10 +22,9 @@ public class Task_Flee : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
-        // BROKEN
         if (m_Target)
         {
-            if ((m_Target.position - m_Agent.transform.position).magnitude <= m_DetectionRange)
+            if ((m_Target.position - m_Agent.transform.position).magnitude <= m_DetectionRange / 2)
             {
                 m_Agent.GetComponent<Script_Enemy>().SetAlertMax();
                 m_Agent.GetComponent<Script_Enemy>().m_OnRoute = true;

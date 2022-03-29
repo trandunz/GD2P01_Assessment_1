@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+using UnityEngine.SceneManagement;
+
 public class Task_Escape : BehaviorNode
 {
     #region Member Variables
@@ -37,7 +39,7 @@ public class Task_Escape : BehaviorNode
                     m_Agent.isStopped = false;
                     if ((m_Van.position - m_Transform.position).magnitude <= 2.0f)
                     {
-                        Debug.Log("End Game");
+                        SceneManager.LoadScene(5);
                     }
                     break;
                 }
@@ -46,10 +48,6 @@ public class Task_Escape : BehaviorNode
                 {
                     m_Agent.SetDestination(m_SafeRoom.position);
                     m_Agent.isStopped = false;
-                    if ((m_SafeRoom.position - m_Transform.position).magnitude <= 2.0f)
-                    {
-                        Debug.Log("End Game");
-                    }
                     break;
                 }
             default:

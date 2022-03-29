@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WinScreen.unity
     guid: f0ca3dffafbcd0c4f997f251570d7632
+  - enabled: 1
+    path: Assets/Scenes/EnemyEscaped.unity
+    guid: 7772c921ae6a9a24e8dd922aba4c8c78
   m_configObjects: {}

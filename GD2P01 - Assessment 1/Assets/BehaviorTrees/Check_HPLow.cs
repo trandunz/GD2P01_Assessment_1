@@ -12,9 +12,11 @@ public class Check_HPLow : BehaviorNode
     public Check_HPLow(Script_Enemy _entity)
     {
         m_Entity = _entity;
+
     }
     public override BehaviorNodeState Evaluate()
     {
+
         if (m_Entity.HealthLow())
         {
             p_State = BehaviorNodeState.SUCCESS;

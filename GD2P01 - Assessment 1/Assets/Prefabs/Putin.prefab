@@ -239,7 +239,7 @@ MonoBehaviour:
   m_SeenPlayer: 0
   m_OnRoute: 0
   m_InCombat: 0
-  m_MaxHealth: 100
+  m_MaxHealth: 70
   m_EnemyType: 2
   m_VisionDistance: 10
   m_DamageInterval_s: 0.2
