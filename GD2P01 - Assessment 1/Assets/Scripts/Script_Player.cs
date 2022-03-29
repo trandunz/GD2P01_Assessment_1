@@ -5,6 +5,7 @@ using UnityEngine;
 public class Script_Player : MonoBehaviour
 {
     #region Member Variables
+    [SerializeField] bool m_Tutorial = false;
     [SerializeField] float m_MoveSpeed = 5.0f, m_DodgeSpeed = 5.0f, m_DodgeLength_s = 0.5f, m_TurnSpeed = 5.0f, m_InteractDistance = 5.0f, m_DamageInterval_s = 0.2f,
         m_HeadCheckDistance = 1.0f, m_MaxHealth = 100.0f;
     [SerializeField] Script_Gun m_ActiveWeapon;
@@ -34,6 +35,7 @@ public class Script_Player : MonoBehaviour
     {
         m_Controller = GetComponent<CharacterController>();
         m_Mesh = GetComponentInChildren<MeshFilter>().gameObject;
+
         m_Health = m_MaxHealth;
     }
     void Update()
@@ -126,6 +128,10 @@ public class Script_Player : MonoBehaviour
     {
         if (m_Health <= 0.0f)
         {
+            if (m_Tutorial)
+                GameObject.FindObjectOfType<Script_WinCondition>().SwitchToTutorial();
+            else
+                GameObject.FindObjectOfType<Script_WinCondition>().SwitchToMissionFailed();
             Destroy(gameObject);
         }
     }

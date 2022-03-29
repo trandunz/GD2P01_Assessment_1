@@ -23,10 +23,11 @@ public class Task_CallAlarm : BehaviorNode
     {
         if (!m_FirstTimeScene)
         {
+            
             m_Enemy.GetManager().HandleFirstTimeScene();
+            m_FirstTimeScene = true;
         }
-        m_FirstTimeScene = true;
-
+        
         m_Agent.SetDestination(m_Alarm.transform.position);
         if (m_Agent)
         {

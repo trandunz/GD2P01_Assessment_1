@@ -10,6 +10,7 @@ public class Script_Interactable : MonoBehaviour
     bool m_Interacting = false;
     Animator Animator = null;
     AudioSource Audio = null;
+
     void Start()
     {
         m_InteractionTimer = m_InteractTime;
