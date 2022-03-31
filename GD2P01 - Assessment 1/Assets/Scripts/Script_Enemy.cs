@@ -11,6 +11,7 @@ public class Script_Enemy : TaskBehaviorTree
         SWAT = 1,
         PUTIN = 2
     }
+
     #region Member Variables
     public bool m_SeenPlayer = false, m_OnRoute = false, m_InCombat = false;
     [SerializeField] float m_MaxHealth = 100.0f;
@@ -18,6 +19,9 @@ public class Script_Enemy : TaskBehaviorTree
     [SerializeField] float m_VisionDistance = 10.0f, m_DamageInterval_s = 0.2f, m_AlertSpeed_s = 1.0f, m_AlertDecay_s = 5.0f;
     [SerializeField] Transform[] m_WayPoints;
     [SerializeField] Script_Gun m_ActiveWeapon;
+    [SerializeField] AudioClip m_HitSound;
+
+    AudioSource m_AudioSource;
     Script_EnemyManager m_Manager;
     Script_Alarm m_Alarm;
     Transform m_Player;
@@ -142,6 +146,7 @@ public class Script_Enemy : TaskBehaviorTree
     #region Protected
     protected override BehaviorNode SetupTree()
     {
+        m_AudioSource = GetComponent<AudioSource>();    
         m_Health = m_MaxHealth;
         m_Manager = GameObject.FindWithTag("EnemyManager").GetComponent<Script_EnemyManager>();
         m_Alarm = GameObject.FindWithTag("Alarm").GetComponent<Script_Alarm>();
@@ -202,6 +207,7 @@ public class Script_Enemy : TaskBehaviorTree
     }
     IEnumerator DamageRoutine(float _amount)
     {
+        m_AudioSource.PlayOneShot(m_HitSound);
         m_TakingDamage = true;
         CheckForDeath();
         Random.InitState((int)Time.realtimeSinceStartup);

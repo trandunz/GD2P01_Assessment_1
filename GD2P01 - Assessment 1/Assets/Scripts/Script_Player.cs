@@ -9,7 +9,9 @@ public class Script_Player : MonoBehaviour
     [SerializeField] float m_MoveSpeed = 5.0f, m_DodgeSpeed = 5.0f, m_DodgeLength_s = 0.5f, m_TurnSpeed = 5.0f, m_InteractDistance = 5.0f, m_DamageInterval_s = 0.2f,
         m_HeadCheckDistance = 1.0f, m_MaxHealth = 100.0f;
     [SerializeField] Script_Gun m_ActiveWeapon;
+    [SerializeField] AudioClip m_RollSound, m_HitSound;
 
+    AudioSource m_AudioSource;
     GameObject m_Mesh;
     CharacterController m_Controller;
     RaycastHit m_MouseHit, m_HeadCheckHit, m_InteractHit;
@@ -35,6 +37,7 @@ public class Script_Player : MonoBehaviour
     {
         m_Controller = GetComponent<CharacterController>();
         m_Mesh = GetComponentInChildren<MeshFilter>().gameObject;
+        m_AudioSource = GetComponent<AudioSource>();
 
         m_Health = m_MaxHealth;
     }
@@ -225,6 +228,7 @@ public class Script_Player : MonoBehaviour
     }
     IEnumerator RollRoutine()
     {
+        m_AudioSource.PlayOneShot(m_RollSound);
         m_Rolling = true;
         m_RollTimer = m_DodgeLength_s;
         SetGameObjectCrouched();
@@ -234,6 +238,7 @@ public class Script_Player : MonoBehaviour
     }
     IEnumerator DamageRoutine(float _amount)
     {
+        m_AudioSource.PlayOneShot(m_HitSound);
         m_TakingDamage = true;
         for (int i = 0; i < _amount; _amount--)
         {
