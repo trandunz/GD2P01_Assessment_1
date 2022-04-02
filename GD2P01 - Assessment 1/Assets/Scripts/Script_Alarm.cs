@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class Script_Alarm : MonoBehaviour
 {
+    #region MemberVariables
     [SerializeField] bool m_Activated = false;
     Script_Reinforcements Script_ReinforcementVan;
     Script_Enemy m_GuardOnWay = null;
     Script_DialoguePopup m_DialoguePopupHandler;
-    private void Start()
+    #endregion
+
+    #region Private
+    void Start()
     {
         m_DialoguePopupHandler = GameObject.FindWithTag("DialoguePopup").GetComponent<Script_DialoguePopup>();
         Script_ReinforcementVan = GameObject.FindWithTag("Reinforcements").GetComponent<Script_Reinforcements>();
     }
+    IEnumerator CallReinforcementsRoutine()
+    {
+        yield return new WaitForSeconds(5);
+        Script_ReinforcementVan.PullUp();
+    }
+    #endregion
 
+    #region Public
     public bool IsActivated()
     {
         return m_Activated;
@@ -33,10 +44,5 @@ public class Script_Alarm : MonoBehaviour
     {
         m_GuardOnWay = _guard;
     }
-
-    IEnumerator CallReinforcementsRoutine()
-    {
-        yield return new WaitForSeconds(5);
-        Script_ReinforcementVan.PullUp();
-    }
+    #endregion
 }

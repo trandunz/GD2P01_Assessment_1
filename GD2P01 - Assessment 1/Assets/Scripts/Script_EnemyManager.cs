@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Script_EnemyManager : MonoBehaviour
 {
+    #region MemberVariables
     [SerializeField] List<Script_Enemy> m_Enemies = new List<Script_Enemy>();
     Vector3 m_LastKnownLocation;
     Script_DialoguePopup m_DialoguePopupHandler;
-
+    #endregion
 
     #region Public
     public List<Script_Enemy> GetEnemies()

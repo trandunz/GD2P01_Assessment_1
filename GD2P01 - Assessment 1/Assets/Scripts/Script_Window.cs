@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Script_Window : MonoBehaviour
 {
+    #region MemberVariables
     [SerializeField] GameObject m_GlassBreakSoundPrefab;
-    private void OnTriggerEnter(Collider other)
+    #endregion
+
+    #region Private
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag is "Bullet")
         {
@@ -14,7 +18,7 @@ public class Script_Window : MonoBehaviour
             
         }
     }
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag is "Bullet")
         {
@@ -22,4 +26,5 @@ public class Script_Window : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    #endregion
 }

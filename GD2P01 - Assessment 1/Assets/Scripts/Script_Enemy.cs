@@ -5,13 +5,6 @@ using UnityEngine;
 
 public class Script_Enemy : TaskBehaviorTree
 {
-    public enum ENEMYTYPE
-    {
-        GUARD = 0,
-        SWAT = 1,
-        PUTIN = 2
-    }
-
     #region Member Variables
     public bool m_SeenPlayer = false, m_OnRoute = false, m_InCombat = false;
     [SerializeField] float m_MaxHealth = 100.0f;
@@ -35,6 +28,12 @@ public class Script_Enemy : TaskBehaviorTree
     #endregion
 
     #region Public
+    public enum ENEMYTYPE
+    {
+        GUARD = 0,
+        SWAT = 1,
+        PUTIN = 2
+    }
     public ENEMYTYPE GetEnemyType()
     {
         return m_EnemyType;

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Script_DialoguePopup : MonoBehaviour
 {
+    #region MemberVariables
     [SerializeField] bool m_Tutorial = false;
     [SerializeField] Image m_Image;
     [SerializeField] TMPro.TextMeshProUGUI m_TextMeshPro;
@@ -12,9 +13,10 @@ public class Script_DialoguePopup : MonoBehaviour
     Animator m_Animator;
     bool m_EnemyFound = false;
     bool m_SwatTeamArriving = false;
+    #endregion
 
-
-    private void Start()
+    #region Private
+    void Start()
     {
         m_Animator = GetComponent<Animator>();
         if (m_Tutorial)
@@ -26,6 +28,9 @@ public class Script_DialoguePopup : MonoBehaviour
             MissionStartMessage();
         }
     }
+    #endregion
+
+    #region Public
     public void BossMessageTutorial()
     {
         m_Image.sprite = m_Images[2];
@@ -33,7 +38,6 @@ public class Script_DialoguePopup : MonoBehaviour
         m_Animator.speed = 0.5f;
         m_Animator.SetTrigger("Popup");
     }
-
     public void DetectionMessageTutorial()
     {
         m_Image.sprite = m_Images[2];
@@ -80,4 +84,5 @@ public class Script_DialoguePopup : MonoBehaviour
         m_TextMeshPro.text = "Alright Soldier, This Is The Real Deal. Locate And Execute The Target.";
         m_Animator.SetTrigger("Popup");
     }
+    #endregion
 }

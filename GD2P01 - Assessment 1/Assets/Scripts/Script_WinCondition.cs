@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Script_WinCondition : MonoBehaviour
 {
+    #region MemberVariables
     [SerializeField] bool m_Tutorial = false;
     Script_EnemyManager m_EnemyManager;
+    #endregion
 
+    #region Public
     public void SwitchToLevel()
     {
         SceneManager.LoadScene(2);
@@ -28,12 +31,14 @@ public class Script_WinCondition : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+    #endregion
 
-    private void Start()
+    #region Private
+    void Start()
     {
         m_EnemyManager = GameObject.FindObjectOfType<Script_EnemyManager>();
     }
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.transform.root.gameObject.tag == "Player" && IsBossDead())
         {
@@ -54,8 +59,7 @@ public class Script_WinCondition : MonoBehaviour
                 SwitchToMissionFailed();
         }
     }
-
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (other.transform.root.gameObject.tag == "Player" && IsBossDead())
         {
@@ -77,7 +81,6 @@ public class Script_WinCondition : MonoBehaviour
         }
 
     }
-
     bool IsBossDead()
     {
         foreach (Script_Enemy enemy in m_EnemyManager.GetEnemies())
@@ -89,4 +92,5 @@ public class Script_WinCondition : MonoBehaviour
         }
         return true;
     }
+    #endregion
 }

@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Script_DoorTrigger : MonoBehaviour
 {
+    #region MemberVariables
     Script_EnemyManager m_EnemyManager;
     Transform m_Player;
-    private void Start()
+    #endregion
+
+    #region Private
+    void Start()
     {
         m_Player = GameObject.FindWithTag("Player").transform;
         m_EnemyManager = GameObject.FindWithTag("EnemyManager").GetComponent<Script_EnemyManager>();
     }
-
-    private void Update()
+    void Update()
     {
         if (m_EnemyManager != null)
         {
@@ -37,7 +40,7 @@ public class Script_DoorTrigger : MonoBehaviour
                     return true;
                 }
             }
-            
+
 
         }
         return false;
@@ -51,7 +54,8 @@ public class Script_DoorTrigger : MonoBehaviour
                 return true;
             }
         }
-        
+
         return false;
     }
+    #endregion
 }

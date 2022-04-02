@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Script_Interactable : MonoBehaviour
 {
+    #region MemberVariables
     [SerializeField] float m_InteractTime = 0.5f;
     [SerializeField] AudioClip[] m_AudioClips;
     float m_InteractionTimer = 0.0f;
     bool m_Interacting = false;
     Animator Animator = null;
     AudioSource Audio = null;
+    #endregion
 
+    #region Private
     void Start()
     {
         m_InteractionTimer = m_InteractTime;
@@ -30,6 +33,9 @@ public class Script_Interactable : MonoBehaviour
                 m_InteractTime -= Time.deltaTime;
         }
     }
+    #endregion
+
+    #region Public
     public void Interact()
     {
         m_Interacting = true;
@@ -57,5 +63,5 @@ public class Script_Interactable : MonoBehaviour
     {
         return !m_Interacting;
     }
-    
+    #endregion
 }

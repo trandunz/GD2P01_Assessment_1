@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class Script_MainMenu : MonoBehaviour
 {
+    #region Public
+    public void StartNewGameNoTutorial()
+    {
+        SceneManager.LoadScene(2);
+    }
     public void StartNewGame()
     {
         SceneManager.LoadScene(1);
@@ -13,4 +18,5 @@ public class Script_MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+    #endregion
 }
