@@ -9,6 +9,9 @@ public class Script_PlayerCamera : MonoBehaviour
     #endregion
 
     #region Private
+    /// <summary>
+    /// Locks the camera with assigned script to target position so that it follows.
+    /// </summary>
     void Update()
     {
         if (m_Target)

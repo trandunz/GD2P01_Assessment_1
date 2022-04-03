@@ -12,10 +12,12 @@ public class Script_CrouchRollMessageTutorial : MonoBehaviour
     #region Private
     void Start()
     {
+        // Find and Assign Dialogue Popup script
         m_DialoguePopup = GameObject.FindObjectOfType<Script_DialoguePopup>();
     }
     void OnTriggerEnter(Collider other)
     {
+        // If player Enter's trigger for first time
         if (other.transform.root.tag == "Player" && !m_Triggered)
         {
             m_DialoguePopup.DetectionMessageTutorial();
@@ -24,6 +26,7 @@ public class Script_CrouchRollMessageTutorial : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
+        // If player Enter's trigger for first time and on trigger enter missed it
         if (other.transform.root.tag == "Player" && !m_Triggered)
         {
             m_DialoguePopup.DetectionMessageTutorial();

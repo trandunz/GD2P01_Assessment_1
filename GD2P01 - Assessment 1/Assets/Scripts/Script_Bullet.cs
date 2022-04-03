@@ -13,6 +13,10 @@ public class Script_Bullet : MonoBehaviour
     #endregion
 
     #region Public
+    /// <summary>
+    /// Sets the rotation of the bullet to match the direction
+    /// </summary>
+    /// <param name="_direction"></param>
     public void SetDirection(Vector3 _direction)
     {
         m_Direction = _direction;
@@ -31,10 +35,12 @@ public class Script_Bullet : MonoBehaviour
     #region Private
     void Update()
     {
+        // Send bullet in assigned direction with specified travel speed
         transform.position += m_Direction * m_TravelSpeed * Time.deltaTime;
     }
     void OnTriggerEnter(Collider _other)
     {
+        // If bullet is friendly / players and hits something other than the player or a bullet then destory it
         if (m_Friendly)
         {
             if (_other.gameObject.tag != "Player" && _other.gameObject.tag != "Bullet")
@@ -46,6 +52,8 @@ public class Script_Bullet : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+
+        // Bullet is not friendly (enemies) and hits something other than another enemy or a bullet then destory it
         else
         {
             if (_other.gameObject.tag == "Player" && _other.gameObject.tag != "Bullet")
@@ -58,6 +66,10 @@ public class Script_Bullet : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Same as on trigger enter but incase the enter function missed it
+    /// </summary>
+    /// <param name="_other"></param>
     void OnTriggerStay(Collider _other)
     {
         if (m_Friendly)

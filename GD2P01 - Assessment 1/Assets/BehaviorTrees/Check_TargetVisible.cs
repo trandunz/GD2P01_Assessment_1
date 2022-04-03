@@ -24,8 +24,7 @@ public class Check_TargetVisible : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
-        bool isPlayerInViewCone = IsPlayerInViewCone();
-        if ((isPlayerInViewCone && m_Enemy.IsInCombat()) || m_Enemy.m_OnRoute)
+        if ((IsPlayerInViewCone() && m_Enemy.IsInCombat()) || m_Enemy.m_OnRoute)
         {
             p_State = BehaviorNodeState.SUCCESS;
         }
@@ -39,15 +38,24 @@ public class Check_TargetVisible : BehaviorNode
     #endregion
 
     #region Private
+    /// <summary>
+    /// Checks if the player is inside the enemy viewcone
+    /// </summary>
+    /// <returns></returns>
     bool IsPlayerInViewCone()
     {
         if (m_Target)
         {
+            // Get direction to player from enemy's head
             Vector3 dirToPlayer = (m_Target.position - (m_Transform.position + Vector3.up * 0.5f));
+            // If angle from forward vector to direction is less than or equal to FOV and distance to player is less than vision distance
             if (Vector3.Angle(m_Transform.forward, dirToPlayer) <= m_Fov && dirToPlayer.magnitude <= m_VisionDistance)
             {
+                // Shoot raycast in direction
                 if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
                 {
+                    // If raycast hit player then set last known location, increase the alert level by one tick and look at the player.
+                    // Return true if hit
                     if (m_VisionHit.transform.tag is "Player")
                     {
                         m_Enemy.GetManager().SetLastKnownLocation(m_Target.position);
@@ -58,9 +66,13 @@ public class Check_TargetVisible : BehaviorNode
                         return true;
                     }
                 }
+                // If first raycast failed, check from enemies weighst to player instead of from head
                 dirToPlayer = (m_Target.position - (m_Transform.position));
+                // Shoot raycast in direction from enemies head
                 if (Physics.Raycast(m_Transform.position + Vector3.up * 0.5f, dirToPlayer.normalized, out m_VisionHit, m_VisionDistance))
                 {
+                    // If raycast hit player then set last known location, increase the alert level by one tick and look at the player.
+                    // Return true if hit
                     if (m_VisionHit.transform.tag is "Player")
                     {
                         m_Enemy.GetManager().SetLastKnownLocation(m_Target.position);
@@ -75,6 +87,7 @@ public class Check_TargetVisible : BehaviorNode
 
         }
 
+        // If enemy has not seen player shoot a fan of debug lines so that in scene view we can see the view cone.
         for (int i = 0; i < m_Fov * 2; i++)
         {
             Vector3 shootVec = m_Transform.rotation * Quaternion.AngleAxis(-1 * m_Fov + (i * m_Fov / m_Fov), Vector3.up) * Vector3.forward;
@@ -82,6 +95,7 @@ public class Check_TargetVisible : BehaviorNode
             Debug.DrawLine(m_Transform.position + Vector3.up * 0.5f, outPos, Color.green);
         }
 
+        // If the enemy has not seen player then decrease alert level by one tick and return false
         m_Enemy.DecreaseAlert();
 
         return false;

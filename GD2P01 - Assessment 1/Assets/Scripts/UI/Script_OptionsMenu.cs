@@ -9,6 +9,33 @@ public class Script_OptionsMenu : MonoBehaviour
     [SerializeField] Dropdown m_ResolutionDropDown;
     #endregion
 
+    #region Private
+    void Start()
+    {
+        // Update drop down menu to make sure it matches current resolution
+        switch (Screen.currentResolution.width)
+        {
+            case 2560:
+                {
+                    m_ResolutionDropDown.value = 0;
+                    break;
+                }
+            case 1920:
+                {
+                    m_ResolutionDropDown.value = 1;
+                    break;
+                }
+            case 1280:
+                {
+                    m_ResolutionDropDown.value = 2;
+                    break;
+                }
+            default:
+                break;
+        }
+    }
+    #endregion
+
     #region Public
     public void SetFullScreen()
     {
@@ -18,6 +45,10 @@ public class Script_OptionsMenu : MonoBehaviour
     {
         Screen.fullScreen = false;
     }
+
+    /// <summary>
+    /// Called When dropdown menu is changed and sets the resolution to selected value
+    /// </summary>
     public void UpdateResolution()
     {
         switch(m_ResolutionDropDown.value)

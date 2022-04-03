@@ -12,14 +12,17 @@ public class Script_UIHandler : MonoBehaviour
     #region Private
     void Start()
     {
+        // Grab Player Script
         m_PlayerScript = GameObject.FindObjectOfType<Script_Player>();
     }
     void Update()
     {
+        // If TAB is pressed, open pause menu
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             m_PauseMenu.SetActive(!m_PauseMenu.activeSelf);
         }
+        // If pause menu open, disable player script else enable it
         if (m_PauseMenu.activeSelf)
         {
             m_PlayerScript.enabled = false;

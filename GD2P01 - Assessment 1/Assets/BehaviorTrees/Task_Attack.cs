@@ -22,8 +22,10 @@ public class Task_Attack : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
+        // If the target exists
         if (m_Target)
         {
+            // If enemy is in combat then set alert for all enemies to maximum
             if (m_EnemyScript.IsInCombat())
             {
                 foreach (Script_Enemy enemy in m_EnemyScript.GetManager().GetEnemies())
@@ -32,10 +34,13 @@ public class Task_Attack : BehaviorNode
                 }
             }
 
+            // Look at the target
             m_Transform.LookAt(new Vector3(m_Target.position.x, m_Transform.position.y, m_Target.position.z));
 
+            // Fire a bullet forward
             m_EnemyScript.FireBullet();
 
+            // Stop the navmesh agent in its tracks and reset its path so that it doesent continue.
             if (m_Agent.isActiveAndEnabled)
             {
                 m_Agent.velocity = Vector3.zero;

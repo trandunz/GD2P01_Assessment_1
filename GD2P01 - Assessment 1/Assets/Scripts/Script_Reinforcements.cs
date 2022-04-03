@@ -16,12 +16,16 @@ public class Script_Reinforcements : MonoBehaviour
     #region Private
     private void Start()
     {
+        // Grab and assign values
         m_EnemyManager = GameObject.FindWithTag("EnemyManager").GetComponent<Script_EnemyManager>();
         m_Animator  = GetComponent<Animator>();
     }
     #endregion
 
     #region Public
+    /// <summary>
+    /// Starts the animation trigger for the swat van to pull up
+    /// </summary>
     public void PullUp()
     {
         m_Animator.SetBool("PullUp", true);
@@ -30,6 +34,9 @@ public class Script_Reinforcements : MonoBehaviour
     {
         m_Body.SetActive(true);
     }
+    /// <summary>
+    /// Spawns a Swat troop at the specified spawn location relative to the van.
+    /// </summary>
     public void SpawnTroop()
     {
         Script_Enemy troop = Instantiate(m_Unit, m_SpawnLocation.position, Quaternion.identity).GetComponent<Script_Enemy>();

@@ -18,6 +18,7 @@ public class Task_MoveToTarget : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     { 
+        // Move to the players last known location
         if (m_Agent)
         {
             m_Agent.SetDestination(m_EnemyManager.GetLastKnownLocation());

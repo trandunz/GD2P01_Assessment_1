@@ -16,11 +16,18 @@ public class Script_Gun : MonoBehaviour
     #endregion
 
     #region Public
+    /// <summary>
+    /// Starts the firing routine with a specified direction
+    /// </summary>
+    /// <param name="_direction"></param>
     public void Fire(Vector3 _direction)
     {
         if (m_CanFire)
             StartCoroutine(ShootRoutine(_direction.normalized));
     }
+    /// <summary>
+    /// Starts the firing routine with the direction equal to that of the guns forward vector
+    /// </summary>
     public void Fire()
     {
         if (m_CanFire)
@@ -33,11 +40,20 @@ public class Script_Gun : MonoBehaviour
     {
         HandleShootTimer();
     }
+    /// <summary>
+    /// Handles firerate / shoottimer
+    /// </summary>
     void HandleShootTimer()
     {
         if (m_ShootTimer > 0)
             m_ShootTimer -= Time.deltaTime;
     }
+    /// <summary>
+    /// Fires a bullet in the specified direction and plays the sound
+    /// Keeps thread open until firerate is ready . shoottimer == 0 using a delegate WaitUntil
+    /// </summary>
+    /// <param name="_direction"></param>
+    /// <returns></returns>
     IEnumerator ShootRoutine(Vector3 _direction)
     {
         m_CanFire = false;

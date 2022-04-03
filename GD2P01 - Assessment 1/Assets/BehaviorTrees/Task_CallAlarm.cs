@@ -21,20 +21,22 @@ public class Task_CallAlarm : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
+        // If its the first time any enemy has seen the player then trigger diologue popup
         if (!m_FirstTimeScene)
         {
-            
             m_Enemy.GetManager().HandleFirstTimeScene();
             m_FirstTimeScene = true;
         }
         
+        // Set the agents destination to the alarm and start him moving
         m_Agent.SetDestination(m_Alarm.transform.position);
         if (m_Agent)
         {
             m_Agent.isStopped = false;
         }
-        float distance = (new Vector3(m_Alarm.transform.position.x, m_Agent.transform.position.y, m_Alarm.transform.position.z) - m_Agent.transform.position).magnitude;
 
+        // if the distance to the alarm is less than 1 unit then trigger the alarm
+        float distance = (new Vector3(m_Alarm.transform.position.x, m_Agent.transform.position.y, m_Alarm.transform.position.z) - m_Agent.transform.position).magnitude;
         if (distance <= 1.0f)
         {
             m_Enemy.m_OnRoute = false;

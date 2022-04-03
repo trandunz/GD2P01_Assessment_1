@@ -14,9 +14,16 @@ public class Script_Alarm : MonoBehaviour
     #region Private
     void Start()
     {
+        // Grab diologue popuup script
         m_DialoguePopupHandler = GameObject.FindWithTag("DialoguePopup").GetComponent<Script_DialoguePopup>();
+
+        // Grab reinforcement van script
         Script_ReinforcementVan = GameObject.FindWithTag("Reinforcements").GetComponent<Script_Reinforcements>();
     }
+    /// <summary>
+    /// Wait 5 seconds and start van pull up
+    /// </summary>
+    /// <returns></returns>
     IEnumerator CallReinforcementsRoutine()
     {
         yield return new WaitForSeconds(5);
@@ -33,6 +40,9 @@ public class Script_Alarm : MonoBehaviour
     {
         return m_GuardOnWay;
     }
+    /// <summary>
+    /// Triggers the alarm and calls reinforcements
+    /// </summary>
     public void Trigger()
     {
         StartCoroutine(CallReinforcementsRoutine());
@@ -40,6 +50,10 @@ public class Script_Alarm : MonoBehaviour
         GetComponent<AudioSource>().Play();
         m_DialoguePopupHandler.SwatTeamMessage();
     }
+    /// <summary>
+    /// Sets the specified guard on way to trigger alarm
+    /// </summary>
+    /// <param name="_guard"></param>
     public void SetGuardOnWay(Script_Enemy _guard)
     {
         m_GuardOnWay = _guard;

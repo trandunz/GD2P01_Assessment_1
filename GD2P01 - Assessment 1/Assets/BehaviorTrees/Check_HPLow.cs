@@ -5,19 +5,19 @@ using UnityEngine;
 public class Check_HPLow : BehaviorNode
 {
     #region Member Variables
-    Script_Enemy m_Entity;
+    Script_Enemy m_EnemyScript;
     #endregion
 
     #region Public
-    public Check_HPLow(Script_Enemy _entity)
+    public Check_HPLow(Script_Enemy _enemyScript)
     {
-        m_Entity = _entity;
+        m_EnemyScript = _enemyScript;
 
     }
     public override BehaviorNodeState Evaluate()
     {
 
-        if (m_Entity.HealthLow())
+        if (m_EnemyScript.IsHealthLow())
         {
             p_State = BehaviorNodeState.SUCCESS;
         }

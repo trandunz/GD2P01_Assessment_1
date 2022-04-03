@@ -5,16 +5,18 @@ using UnityEngine;
 public class BehaviorSelector : BehaviorNode
 {
     #region Public
-    public BehaviorSelector() : base() { }
-    public BehaviorSelector(List<BehaviorNode> _children) : base(_children) { }
+    // Inherit BehaviorSelector constructor from base class (behavior node)
+    public BehaviorSelector() : base(){}
+    // Inherit BehaviorSelector constructor from base class (behavior node)
+    public BehaviorSelector(List<BehaviorNode> _children) : base(_children){}
+    // Override BehaviorNode Evaluate and cater it to a Selector type evaluation
     public override BehaviorNodeState Evaluate()
     {
+        // Loop thtrough all childeren nodes and evaluate. continue if any of them fail and break out if any of them are running or returning success.
         foreach (BehaviorNode node in p_Children)
         {
             switch (node.Evaluate())
             {
-                case BehaviorNodeState.FAILURE:
-                    continue;
                 case BehaviorNodeState.SUCCESS:
                     p_State = BehaviorNodeState.SUCCESS;
                     return p_State;
@@ -26,6 +28,7 @@ public class BehaviorSelector : BehaviorNode
             }
         }
 
+        // If all nodes are evaluated then return failure
         p_State = BehaviorNodeState.FAILURE;
 
         return p_State;

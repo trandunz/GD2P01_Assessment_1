@@ -35,6 +35,7 @@ public class Script_Player : MonoBehaviour
     #region Private
     void Start()
     {
+        // Grab and assign values
         m_Controller = GetComponent<CharacterController>();
         m_Mesh = GetComponentInChildren<MeshFilter>().gameObject;
         m_AudioSource = GetComponent<AudioSource>();
@@ -45,11 +46,13 @@ public class Script_Player : MonoBehaviour
     {
         ApplyGravity();
 
+        // if player is not interacting with something then allow movement e.t.c
         if (!m_Interacting)
         {
             HandleLookAtMouse();
 
             ReturnInput();
+            // Head Check test to stay crouching if rooll in tight space
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.up), out m_HeadCheckHit, m_HeadCheckDistance))
             {
                 if (m_HeadCheckHit.transform.gameObject != null)
@@ -78,6 +81,9 @@ public class Script_Player : MonoBehaviour
 
         CheckForDeath();
     }
+    /// <summary>
+    /// Halfs the y scale of the players mesh and characyer controller collider
+    /// </summary>
     void SetGameObjectCrouched()
     {
         if (m_Mesh.transform.localScale == Vector3.one)
@@ -86,6 +92,9 @@ public class Script_Player : MonoBehaviour
             m_Controller.height = 0.5f;
         }
     }
+    /// <summary>
+    /// return the y scale to 1 of the players mesh and characyer controller collider
+    /// </summary>
     void SetGameObjectStanding()
     {
         if(m_Mesh.transform.localScale != Vector3.one && !m_Crouched)
@@ -94,18 +103,27 @@ public class Script_Player : MonoBehaviour
             m_Controller.height = 2.0f;
         }
     }
+    /// <summary>
+    /// Moves the player controller based on input values
+    /// </summary>
+    /// <param name="_moveSpeed"></param>
     void HandleMovement(float _moveSpeed)
     {
         if (m_InputVector.magnitude > 0.1f)
             m_Controller.Move(new Vector3(m_InputVector.x, 0.0f, m_InputVector.y) * _moveSpeed * Time.deltaTime);
     }
+    /// <summary>
+    /// Orients the players rotation with the direction the mouse hit point if raycasted into 3d
+    /// </summary>
     void HandleLookAtMouse()
     {
+        // 3d raycast of mouse position
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out m_MouseHit))
         {
             m_MousePos3D = m_MouseHit.point;
         }
 
+        // Smooth and assign the rotation of the player based on the mouse position
         float targetAngle;
         targetAngle = Mathf.Atan2((transform.position.x - m_MousePos3D.x), transform.position.z - m_MousePos3D.z) * Mathf.Rad2Deg + 180;
         float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref m_TurnSmoothVelocity, m_TurnSpeed);
@@ -113,6 +131,9 @@ public class Script_Player : MonoBehaviour
         movedir.Normalize();
         transform.rotation = Quaternion.Euler(0.0f, smoothedAngle, 0.0f);
     }
+    /// <summary>
+    /// Handles the players dodge roll
+    /// </summary>
     void HandleRoll()
     {
         if (m_RollTimer > 0)
@@ -123,10 +144,18 @@ public class Script_Player : MonoBehaviour
             m_Controller.Move(transform.rotation * Vector3.forward * m_DodgeSpeed * Time.deltaTime);
         }
     }
+    /// <summary>
+    /// Applies a constant move vector to the player that corresponds to gravity
+    /// </summary>
     void ApplyGravity()
     {
         m_Controller.Move(Vector3.down* 9.81f * Time.deltaTime);
     }
+    /// <summary>
+    /// Checks if the players health is less than 0. If it is, switch scenes according to current.
+    /// Tutorial = Restart
+    /// Game = Mission Failed
+    /// </summary>
     void CheckForDeath()
     {
         if (m_Health <= 0.0f)
@@ -140,6 +169,7 @@ public class Script_Player : MonoBehaviour
     }
     void OnTriggerEnter(Collider _other)
     {
+        // If player is hit by a bullet and its an hostile then startt daamage routine.
         if (_other.gameObject.tag == "Bullet")
         {
             Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
@@ -153,6 +183,8 @@ public class Script_Player : MonoBehaviour
     }
     void OnTriggerStay(Collider _other)
     {
+        // called incase entered missed the bullet
+        // If player is hit by a bullet and its an hostile then startt daamage routine.
         if (_other.gameObject.tag == "Bullet")
         {
             Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
@@ -164,6 +196,13 @@ public class Script_Player : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Returns a vector 2 corresponding to the players input (WASD).
+    /// Handles input for rolling and staarts the roll routine.
+    /// Handles input for interacting and starts interact routine.
+    /// Handles input for firing weapon and starts fire routine.
+    /// </summary>
+    /// <returns></returns>
     Vector2 ReturnInput()
     {
         m_InputVector = Vector2.zero;
@@ -207,6 +246,10 @@ public class Script_Player : MonoBehaviour
 
         return m_InputVector.normalized;
     }
+    /// <summary>
+    /// interacts with an object if its in front of the player depending on the interaction distrance. If interaction is successful, start a WaitUntil with a delegate that waits for the interaction to finish.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator InteractRoutine()
     {
         m_Interacting = true;
@@ -226,6 +269,10 @@ public class Script_Player : MonoBehaviour
 
         m_Interacting = false;
     }
+    /// <summary>
+    /// Handles the roll and plays the sound. Uses a WaitUntil with a delegate to wait for the roll to be finished
+    /// </summary>
+    /// <returns></returns>
     IEnumerator RollRoutine()
     {
         m_AudioSource.PlayOneShot(m_RollSound);
@@ -236,9 +283,13 @@ public class Script_Player : MonoBehaviour
         SetGameObjectStanding();
         m_Rolling = false;
     }
+    /// <summary>
+    /// Plays the player damage sound and deals damage preventing the players health from dipping below 0.
+    /// </summary>
+    /// <param name="_amount"></param>
+    /// <returns></returns>
     IEnumerator DamageRoutine(float _amount)
     {
-        m_AudioSource.PlayOneShot(m_HitSound);
         m_TakingDamage = true;
         for (int i = 0; i < _amount; _amount--)
         {
@@ -248,9 +299,10 @@ public class Script_Player : MonoBehaviour
             }
             else
             {
-                yield return null;
+                break;
             }
         }
+        m_AudioSource.PlayOneShot(m_HitSound);
         yield return new WaitForSeconds(m_DamageInterval_s);
         m_TakingDamage = false;
     }

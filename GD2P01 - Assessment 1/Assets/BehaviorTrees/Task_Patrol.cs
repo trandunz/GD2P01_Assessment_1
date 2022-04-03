@@ -21,6 +21,8 @@ public class Task_Patrol : BehaviorNode
         m_Waypoints = _waypoints;
         m_CurrentWaypointIndex = 0;
         m_CurrentWayPoint = m_Waypoints[m_CurrentWaypointIndex].position;
+
+        // Start the navmesh agent off on the path to the first waypoint
         SetAgentDestinationToWayPoint();
     }
     public override BehaviorNodeState Evaluate()
@@ -68,6 +70,10 @@ public class Task_Patrol : BehaviorNode
         }
             
     }
+    /// <summary>
+    /// Checks if enemy is currently on the way to any of the waypoints
+    /// </summary>
+    /// <returns></returns>
     bool IsEnemyOnRouteToWayPoint()
     {
         foreach(Transform pos in m_Waypoints)

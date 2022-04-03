@@ -36,10 +36,13 @@ public class Script_WinCondition : MonoBehaviour
     #region Private
     void Start()
     {
+        // Grab and assign enemy manager
         m_EnemyManager = GameObject.FindObjectOfType<Script_EnemyManager>();
     }
     void OnTriggerEnter(Collider other)
     {
+        // If player exits through entry vent and boss is dead then mission success, else mission failed.
+        // if in tutorial then take player to main level regardless.
         if (other.transform.root.gameObject.tag == "Player" && IsBossDead())
         {
             if (m_Tutorial)
@@ -61,6 +64,9 @@ public class Script_WinCondition : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
+        // Called if enter failed
+        // If player exits through entry vent and boss is dead then mission success, else mission failed.
+        // if in tutorial then take player to main level regardless.
         if (other.transform.root.gameObject.tag == "Player" && IsBossDead())
         {
             if (m_Tutorial)
@@ -81,11 +87,15 @@ public class Script_WinCondition : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// Checks through all alive enemies for the boss. If he is found return false else true.
+    /// </summary>
+    /// <returns></returns>
     bool IsBossDead()
     {
         foreach (Script_Enemy enemy in m_EnemyManager.GetEnemies())
         {
-            if (enemy.GetEnemyType() == Script_Enemy.ENEMYTYPE.PUTIN)
+            if (enemy.GetEnemyType() == Script_Enemy.ENEMYTYPE.BOSS)
             {
                 return false;
             }

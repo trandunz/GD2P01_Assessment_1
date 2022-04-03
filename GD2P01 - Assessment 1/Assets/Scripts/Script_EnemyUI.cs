@@ -14,10 +14,12 @@ public class Script_EnemyUI : MonoBehaviour
     #region Private
     void Start()
     {
+        // Grab enemy script
         m_EnemyScript = GetComponent<Script_Enemy>();
     }
     void Update()
     {
+        // Constantly update health and detection UI meters in corespondance to the values
         m_HealthBar.fillAmount = m_EnemyScript.GetHealth() / m_EnemyScript.GetMaxHealth();
         m_DetectionBar.fillAmount = m_EnemyScript.GetAlertLevel() / m_EnemyScript.GetAlertSpeed();
     }

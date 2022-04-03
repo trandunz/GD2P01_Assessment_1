@@ -30,6 +30,7 @@ public class Task_Escape : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
+        // Evaluate the random value between 0 and 1
         switch(m_RandomSelection % 2)
         {
             // Escape To Van
@@ -37,6 +38,7 @@ public class Task_Escape : BehaviorNode
                 {
                     m_Agent.SetDestination(m_Van.position);
                     m_Agent.isStopped = false;
+                    // If distance to van is less than 2 units then switch scenes to mission failed
                     if ((m_Van.position - m_Transform.position).magnitude <= 2.0f)
                     {
                         SceneManager.LoadScene(5);

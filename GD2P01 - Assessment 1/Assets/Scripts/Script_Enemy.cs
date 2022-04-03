@@ -32,12 +32,20 @@ public class Script_Enemy : TaskBehaviorTree
     {
         GUARD = 0,
         SWAT = 1,
-        PUTIN = 2
+        BOSS = 2
     }
+    /// <summary>
+    /// Returns the enemy type (guard, swat or boss)
+    /// </summary>
+    /// <returns></returns>
     public ENEMYTYPE GetEnemyType()
     {
         return m_EnemyType;
     }
+    /// <summary>
+    /// Starts the healing couroutine 
+    /// </summary>
+    /// <param name="_amount"></param>
     public void Heal(float _amount)
     {
         if (!m_Healing)
@@ -45,6 +53,10 @@ public class Script_Enemy : TaskBehaviorTree
             StartCoroutine(HealRoutine(_amount));
         }
     }
+    /// <summary>
+    /// Returns the alert speed of the enmy depending on if there in combat or not
+    /// </summary>
+    /// <returns></returns>
     public float GetAlertSpeed()
     {
         if (m_InCombat)
@@ -52,6 +64,9 @@ public class Script_Enemy : TaskBehaviorTree
         else
             return m_AlertSpeed_s;
     }
+    /// <summary>
+    /// Sets the alert level of the enemy to max and updates the last known player location to the blackboard / enemymanager
+    /// </summary>
     public void SetAlertMax()
     {
         if (m_Player)
@@ -59,10 +74,18 @@ public class Script_Enemy : TaskBehaviorTree
         m_AlertLevel = m_AlertDecay_s;
         m_InCombat = true;
     }
+    /// <summary>
+    /// Sets the waypoints to specified array of transforms
+    /// </summary>
+    /// <param name="_waypoints"></param>
     public void SetWaypoints(Transform[] _waypoints)
     {
         m_WayPoints = _waypoints;
     }
+    /// <summary>
+    /// Returns a refrence to the enemy manager
+    /// </summary>
+    /// <returns></returns>
     public ref Script_EnemyManager GetManager()
     {
         return ref m_Manager;
@@ -75,7 +98,11 @@ public class Script_Enemy : TaskBehaviorTree
     {
         return m_MaxHealth;
     }
-    public bool HealthLow()
+    /// <summary>
+    /// Checks if the enemy health is low with some random leway +- 20 hp from maxhealth / 2
+    /// </summary>
+    /// <returns></returns>
+    public bool IsHealthLow()
     {
         if (m_Health < ((m_MaxHealth/2) + m_RandomSelection % 20))
         {
@@ -87,6 +114,9 @@ public class Script_Enemy : TaskBehaviorTree
     {
         return m_TakingDamage;
     }
+    /// <summary>
+    /// Increases the enemies alert level by one tick. If its more than the alert speed then set is comabt to true. 
+    /// </summary>
     public void IncreaseAlert()
     {
         if (m_AlertLevel >= m_AlertSpeed_s)
@@ -99,6 +129,9 @@ public class Script_Enemy : TaskBehaviorTree
             m_AlertLevel += Time.deltaTime;
         }
     }
+    /// <summary>
+    /// Checks if the enemy should be dead. If hes not dead, play the hit sound
+    /// </summary>
     public void CheckForDeath()
     {
         if (m_Health <= 0)
@@ -106,7 +139,14 @@ public class Script_Enemy : TaskBehaviorTree
             m_Manager.RemoveEnemy(this);
             Destroy(gameObject);
         }
+        else
+        {
+            m_AudioSource.PlayOneShot(m_HitSound);
+        }
     }
+    /// <summary>
+    /// Decreases the enemy alert by one tick. If its less or equal to 0 then set in combat to false.
+    /// </summary>
     public void DecreaseAlert()
     {
         if (m_AlertLevel > 0.0f)
@@ -131,10 +171,18 @@ public class Script_Enemy : TaskBehaviorTree
     {
         m_ActiveWeapon.Fire(m_DirectionToPlayer);
     }
+    /// <summary>
+    /// Updates the direction from the enemy to the player
+    /// </summary>
+    /// <param name="_direction"></param>
     public void SetDirectionToPlayer(Vector3 _direction)
     {
         m_DirectionToPlayer = _direction;
     }
+    /// <summary>
+    /// Returns the player transfrom and updates the direction from the enemy to the player
+    /// </summary>
+    /// <returns></returns>
     public Transform GetPlayerCache()
     {
         m_DirectionToPlayer = (m_Player.position - (transform.position + Vector3.up * 0.5f)).normalized;
@@ -143,8 +191,13 @@ public class Script_Enemy : TaskBehaviorTree
     #endregion
 
     #region Protected
+    /// <summary>
+    /// Sets up the behavior tree based on enemy type
+    /// </summary>
+    /// <returns></returns>
     protected override BehaviorNode SetupTree()
     {
+        // Grab scripts and values 
         m_AudioSource = GetComponent<AudioSource>();    
         m_Health = m_MaxHealth;
         m_Manager = GameObject.FindWithTag("EnemyManager").GetComponent<Script_EnemyManager>();
@@ -152,10 +205,10 @@ public class Script_Enemy : TaskBehaviorTree
         m_AttachedAgent = GetComponent<NavMeshAgent>();
         m_HealthStation = GameObject.FindGameObjectWithTag("HealthStation").transform;
         GameObject player = GameObject.FindWithTag("Player");
-
         if (player)
             m_Player = player.transform;
         
+        // Seetup behavior tree based on type
         switch(m_EnemyType)
         {
             case ENEMYTYPE.GUARD:
@@ -166,9 +219,9 @@ public class Script_Enemy : TaskBehaviorTree
                 {
                     return SwatTreeSetup();
                 }
-            case ENEMYTYPE.PUTIN:
+            case ENEMYTYPE.BOSS:
                 {
-                    return PutinTreeSetup();
+                    return BossTreeSetup();
                 }
             default:
                 break;
@@ -180,6 +233,7 @@ public class Script_Enemy : TaskBehaviorTree
     #region Private
     void OnTriggerEnter(Collider _other)
     {
+        // If bullet hits enemy and it is friendly / from player then take damage
         if (_other.gameObject.tag == "Bullet")
         { 
             Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
@@ -193,6 +247,8 @@ public class Script_Enemy : TaskBehaviorTree
     }
     void OnTriggerStay(Collider _other)
     {
+        // Used in case enter failed to get called
+        // If bullet hits enemy and it is friendly / from player then take damage
         if (_other.gameObject.tag == "Bullet")
         {
             Script_Bullet bulletScript = _other.transform.GetComponent<Script_Bullet>();
@@ -204,11 +260,16 @@ public class Script_Enemy : TaskBehaviorTree
             }
         }
     }
+    /// <summary>
+    /// Handles the enemy taking damage and prevents the enmies health from going below 0
+    /// Also updates the random selection value for the fleeing of an enemy every time the enemy gets hit. This is to prevent all enemies from having the same random selection
+    /// </summary>
+    /// <param name="_amount"></param>
+    /// <returns></returns>
     IEnumerator DamageRoutine(float _amount)
     {
-        m_AudioSource.PlayOneShot(m_HitSound);
         m_TakingDamage = true;
-        CheckForDeath();
+
         Random.InitState((int)Time.realtimeSinceStartup);
         m_RandomSelection = Random.Range(-9999, 9999);
 
@@ -223,13 +284,15 @@ public class Script_Enemy : TaskBehaviorTree
             else
             {
                 m_TakingDamage = false;
-                yield return null;
+                break;
             }
         }
+        CheckForDeath();
         yield return new WaitForSeconds(m_DamageInterval_s);
         m_TakingDamage = false;
     }
-
+    // Heals the enemy and prevents its health from going past its maxHP
+    // Keeps thread open until healing is complete using a delegate WaitUntil
     IEnumerator HealRoutine(float _amount)
     {
         m_Healing = true;
@@ -248,13 +311,16 @@ public class Script_Enemy : TaskBehaviorTree
         yield return new WaitUntil(() => m_Health >= m_MaxHealth);
         m_Healing = false;
     }
+    /// <summary>
+    /// Sets up the behvaior tree for a guard
+    /// </summary>
+    /// <returns></returns>
     BehaviorNode GuardTreeSetup()
     {
         BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
         {
             new BehaviorSelector(new List<BehaviorNode>
             {
-                
                 new BehaviorSequence(new List<BehaviorNode>
                 {
                     new Check_TargetAlive(m_Player, this),
@@ -336,13 +402,16 @@ public class Script_Enemy : TaskBehaviorTree
         });
         return rootNode;
     }
+    /// <summary>
+    /// Seets up the behavior tree for a swat
+    /// </summary>
+    /// <returns></returns>
     BehaviorNode SwatTreeSetup()
     {
         BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
         {
             new BehaviorSelector(new List<BehaviorNode>
             {
-
                 new BehaviorSequence(new List<BehaviorNode>
                 {
                     new Check_TargetAlive(m_Player, this),
@@ -366,7 +435,11 @@ public class Script_Enemy : TaskBehaviorTree
         });
         return rootNode;
     }
-    BehaviorNode PutinTreeSetup()
+    /// <summary>
+    /// Sets up the behavior tree for a boss
+    /// </summary>
+    /// <returns></returns>
+    BehaviorNode BossTreeSetup()
     {
         BehaviorNode rootNode = new BehaviorSelector(new List<BehaviorNode>
         {

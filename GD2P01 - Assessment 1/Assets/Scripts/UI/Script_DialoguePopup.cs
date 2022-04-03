@@ -18,7 +18,10 @@ public class Script_DialoguePopup : MonoBehaviour
     #region Private
     void Start()
     {
+        // grab animator component
         m_Animator = GetComponent<Animator>();
+
+        // On Game Start, play a message
         if (m_Tutorial)
         {
             TutorialMessage();
@@ -70,7 +73,6 @@ public class Script_DialoguePopup : MonoBehaviour
             m_TextMeshPro.text = "Theres Someone Here! Sound The Alarm";
             m_Animator.SetTrigger("Popup");
         }
-
     }
     public void TutorialMessage()
     {

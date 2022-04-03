@@ -11,6 +11,7 @@ public class Script_Window : MonoBehaviour
     #region Private
     void OnTriggerEnter(Collider other)
     {
+        // If bullet of any kind hits window then play the sound and break the window.
         if (other.gameObject.tag is "Bullet")
         {
             Destroy(Instantiate(m_GlassBreakSoundPrefab, transform.position, Quaternion.identity), 2.0f);
@@ -20,6 +21,8 @@ public class Script_Window : MonoBehaviour
     }
     void OnTriggerStay(Collider other)
     {
+        // Calleed if enter failed to get called.
+        // If bullet of any kind hits window then play the sound and break the window.
         if (other.gameObject.tag is "Bullet")
         {
             Destroy(Instantiate(m_GlassBreakSoundPrefab, transform.position, Quaternion.identity), 2.0f);

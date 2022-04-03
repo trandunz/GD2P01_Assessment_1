@@ -6,22 +6,23 @@ public class Script_Interactable : MonoBehaviour
 {
     #region MemberVariables
     [SerializeField] float m_InteractTime = 0.5f;
-    [SerializeField] AudioClip[] m_AudioClips;
     float m_InteractionTimer = 0.0f;
     bool m_Interacting = false;
-    Animator Animator = null;
-    AudioSource Audio = null;
+    Animator m_Animator = null;
+    AudioSource m_Audio = null;
     #endregion
 
     #region Private
     void Start()
     {
+        // Grab and assign values
         m_InteractionTimer = m_InteractTime;
-        Animator = GetComponent<Animator>();
-        Audio = GetComponent<AudioSource>();
+        m_Animator = GetComponent<Animator>();
+        m_Audio = GetComponent<AudioSource>();
     }
     void Update()
     {
+        // If object is interacting then decrease timer. If timer reaches 0, interaction has finished
         if (m_Interacting)
         {
             if (m_InteractTime <= 0)
@@ -36,27 +37,30 @@ public class Script_Interactable : MonoBehaviour
     #endregion
 
     #region Public
+    /// <summary>
+    /// Calls the animator bool "open" if an animator is available and sets interating to true which begins interaction timer in update.
+    /// </summary>
     public void Interact()
     {
         m_Interacting = true;
-        if (Animator != null)
+        if (m_Animator != null)
         {
-            Animator.SetBool("Open", true);
+            m_Animator.SetBool("Open", true);
         }
         
     }
     public void PlayOpenAudioIfAvailable()
     {
-        if (Audio != null)
+        if (m_Audio != null)
         {
-            Audio.Play();
+            m_Audio.Play();
         }
     }
     public void PlayCloseAudioIfAvailable()
     {
-        if (Audio != null)
+        if (m_Audio != null)
         {
-            Audio.Play();
+            m_Audio.Play();
         }
     }
     public bool HasInteractFinished()

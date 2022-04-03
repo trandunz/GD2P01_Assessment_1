@@ -18,13 +18,12 @@ public class Task_Chase : BehaviorNode
     }
     public override BehaviorNodeState Evaluate()
     {
-
+        // Set agents destination to the target / last seen player location
         m_Agent.SetDestination(m_Target.position);
         if (m_Agent)
         {
             m_Agent.isStopped = false;
         }
-        m_Agent.transform.position = m_Agent.nextPosition;
 
         p_State = BehaviorNodeState.RUNNING;
         return p_State;

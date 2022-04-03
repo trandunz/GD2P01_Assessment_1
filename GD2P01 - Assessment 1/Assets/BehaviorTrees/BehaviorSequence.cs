@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class BehaviorSequence : BehaviorNode
 {
+    #region MemberVariables
+    bool m_AnyChildRunning = false;
+    #endregion
+
     #region Public
-    public BehaviorSequence() : base() { }
-    public BehaviorSequence(List<BehaviorNode> _children) : base(_children) { }
+    // Inherit BehaviorSequence constructor from base class (behavior node)
+    public BehaviorSequence() : base(){}
+    // Inherit BehaviorSequence constructor from base class (behavior node)
+    public BehaviorSequence(List<BehaviorNode> _children) : base(_children){}
+    // Override BehaviorNode Evaluate and cater it to a Sequence type evaluation
     public override BehaviorNodeState Evaluate()
     {
-        bool anyChildIsRunning = false;
+        // Reset any child running bool
+        m_AnyChildRunning = false;
 
+        // Loop thtrough all childeren nodes and evaluate. continue if any of them succeed and break out if any of them fail.
         foreach (BehaviorNode node in p_Children)
         {
             switch (node.Evaluate())
@@ -19,14 +28,15 @@ public class BehaviorSequence : BehaviorNode
                     p_State = BehaviorNodeState.FAILURE;
                     return p_State;
                 case BehaviorNodeState.RUNNING:
-                    anyChildIsRunning = true;
+                    m_AnyChildRunning = true;
                     continue;
                 default:
                     continue;
             }
         }
 
-        p_State = anyChildIsRunning ? BehaviorNodeState.RUNNING : BehaviorNodeState.SUCCESS;
+        // If any child is running then return selector as running else if all succeed then return success
+        p_State = m_AnyChildRunning ? BehaviorNodeState.RUNNING : BehaviorNodeState.SUCCESS;
 
         return p_State;
     }
