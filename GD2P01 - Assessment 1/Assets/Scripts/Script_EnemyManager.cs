@@ -1,3 +1,13 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Script_EnemyManager.cs 
+// Description : Enemy Manager Implementation File
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

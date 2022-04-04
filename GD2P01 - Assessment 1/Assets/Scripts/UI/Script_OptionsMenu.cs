@@ -1,3 +1,13 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Script_OptionsMenu.cs 
+// Description : Handles Options Menu Actions
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +20,7 @@ public class Script_OptionsMenu : MonoBehaviour
     #endregion
 
     #region Private
-    void Start()
+    void OnEnable()
     {
         // Update drop down menu to make sure it matches current resolution
         switch (Screen.currentResolution.width)

@@ -1,3 +1,13 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Task_Attack.cs 
+// Description : Attacks The Target
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

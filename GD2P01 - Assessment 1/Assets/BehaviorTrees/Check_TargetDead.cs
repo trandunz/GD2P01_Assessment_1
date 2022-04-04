@@ -1,3 +1,13 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Check_TargetAlive.cs 
+// Description : Checks If The Target Is Alive
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
